@@ -1,0 +1,10 @@
+name: RedLightGreenLight
+version: '${project.version}'
+main: me.loving11ish.redlightgreenlight.RedLightGreenLight
+api-version: 1.13
+authors: [ Loving11ish ]
+description: A Red Light, Green Light mini game based off the Netflix series Squid Games.
+commands:
+  redlight:
+    description: The main command.
+    usage: /redlight <command>

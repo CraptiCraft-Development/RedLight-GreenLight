@@ -1,0 +1,127 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                   ----[RedLight-GreenLight]----                                   #
+#                                     ----[By Loving11ish]----                                      #
+#                                   ----[mc.crapticraft.com]----                                    #
+#                           ----[Made in collaboration with BoboCraft]----                          #
+#                                   ----[play.bobocraft.com]----                                    #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                   ----[Plugin Config File]----                                    #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Do you want players inventories to be wiped on join?
+#This can bypassed using permission node 'redlight.bypass.joinwipe'
+Wipe-inventory-on-join: true
+
+#Do you want RedLight-GreenLight to handle server join spawn location (World/Server join lobby)?
+Handle-player-join-spawn-event: false
+
+#Do you want to send a welcome title for players joining the server?
+Send-welcome-title: true
+#Welcome-player-to-server-title:
+Welcome-player-title: "&a&lWelcome To RedLight-GreenLight!"
+Welcome-player-subtitle: "&ePlease use /redlight join"
+
+#Do you want the player to be made invulnerable on join?
+Join-player-invulnerable: true
+
+#World/server join lobby position
+#Join-lobby-position:
+lobby-x: -275.5
+lobby-y: 69.2
+lobby-z: 89.5
+lobby-yaw: 180.0
+lobby-pitch: -0.0
+
+#List below commands that are blocked during gameplay.
+#This can bypassed using permission node 'redlight.bypass.commands'
+Blocked-commands-in-game:
+  - "/spawn"
+  - "/home"
+  - "/sethome"
+  - "/back"
+  - "/tp"
+  - "/suicide"
+  - "/gamemode"
+  - "/gmc"
+  - "/gmsp"
+  - "/thru"
+  - "/tpa"
+  - "/tpask"
+  - "/warp"
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                       ----[ARENA SETUP]----                                       #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#How many players should be in the arena for the game to start?
+Arena-start-size: 4
+
+#Set the arena starting position for the players
+#Arena-position:
+Arena-Start-x: -290.5
+Arena-Start-y: 72.2
+Arena-Start-z: 80.5
+Arena-Start-yaw: -90.0
+Arena-Start-pitch: -0.0
+
+#The following section sets the detection of the winning zone.
+#Simply make the floor of the winning area out of the below block combination.
+Top-trigger-block: COAL_BLOCK
+Bottom-trigger-block: GOLD_BLOCK
+
+#Do you want to run any commands when a player wins?
+Run-win-commands: true
+#Enter the list of commands to be run below. (All commands are executed by the console)
+Win-commands-list:
+  - "xp add %player% 10 levels"
+  - "effect give %player% minecraft:speed 10 1"
+
+#Do you want to run any commands when a player loses?
+Run-lose-commands: true
+#Enter the list of commands to be run below. (All commands are executed by the console)
+Lose-commands-list:
+  - "effect give %player% minecraft:poison 10 0"
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                   ----[RedLight-GreenLight]----                                   #
+#                                     ----[By Loving11ish]----                                      #
+#                                   ----[mc.crapticraft.com]----                                    #
+#                           ----[Made in collaboration with BoboCraft]----                          #
+#                                   ----[play.bobocraft.com]----                                    #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                  ----[Plugin Messages File]----                                   #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Game messages
+Joined-game: "&aYou have joined the game.\n&aNow prepare to move only when told!"
+Command-send-error: "&cSorry, that command cannot be run during gameplay!"
+Failed-join-arena: "&cYou are already part of a game.\n&cUse &e/redlight leave &cto return to main lobby."
+Successful-leave-game: "&aYou left the game and were teleported back to the lobby!"
+Player-not-in-game: "&cYou are not currently in a &4&lRedLight&r&c-&a&lGreenLight &r&cgame!"
+Waiting-for-enough-players: "&eYou are now in the queue to play.&r\n&eNow waiting for enough players to begin the game."
+
+Game-start-title: "&a&lLet The Race Begin!"
+Game-start-subtitle: "&bBeat everyone to the finish line!"
+
+Game-win-title: "&6&lCongratulations!  You Made it!"
+Game-win-subtitle: "&bLets wait and see who will join you"
+
+Game-loose-title: "&c&lOOF You didn't stand still!"
+Game-loose-subtitle: "&4Better luck next time!"
+
+#Do you want the players to be shown a title when they leave the game?
+Show-leave-game-title: false
+Game-leave-title: "&a&lYou Left The Game!"
+Game-leave-subtitle: "&eThank you for playing!"
+
+#Incorrect-command-syntax-console:
+Syntax-error-1: "&4Please provide an argument!"
+Syntax-error-2: "&4redlight reload"
+Syntax-error-3: "&4redlight help"
+
+Plugin-reload-successful: "&aThe config file has been reloaded!"
+Reload-command-no-permission: "&4You do not have the permission &eredlight.reload &4needed to run that command"
