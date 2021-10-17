@@ -2,6 +2,8 @@ package me.loving11ish.redlightgreenlight;
 
 import me.loving11ish.redlightgreenlight.commands.CommandManager;
 import me.loving11ish.redlightgreenlight.events.*;
+import me.loving11ish.redlightgreenlight.updatesystem.UpdateChecker;
+import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -61,6 +63,19 @@ public final class RedLightGreenLight extends JavaPlugin {
         logger.info(ChatColor.AQUA + "RedLightGreenLight - has been loaded successfully");
         logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin Version: " + ChatColor.GREEN + pluginVersion);
         logger.info("-------------------------------------------");
+
+        //Check for available updates
+        new UpdateChecker(this, 96866).getVersion(version -> {
+            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                logger.info(ColorUtils.translateColorCodes(getConfig().getString("No-update-1")));
+                logger.info(ColorUtils.translateColorCodes(getConfig().getString("No-update-2")));
+                logger.info(ColorUtils.translateColorCodes(getConfig().getString("No-update-3")));
+            }else {
+                logger.warning(ColorUtils.translateColorCodes(getConfig().getString("Update-1")));
+                logger.warning(ColorUtils.translateColorCodes(getConfig().getString("Update-2")));
+                logger.warning(ColorUtils.translateColorCodes(getConfig().getString("Update-3")));
+            }
+        });
     }
 
     @Override

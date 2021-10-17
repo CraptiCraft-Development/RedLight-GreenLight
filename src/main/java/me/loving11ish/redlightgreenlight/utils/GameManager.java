@@ -59,7 +59,7 @@ public class GameManager {
         float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-pitch");
         Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
         player.teleport(location);
-        if (!(player.hasPermission("redlight.gamemode.bypass")||player.hasPermission("redlight.*")||player.isOp())){
+        if (!(player.hasPermission("redlight.bypass.gamemode")||player.hasPermission("redlight.*")||player.isOp())){
             player.setGameMode(GameMode.SURVIVAL);
         }
     }
@@ -90,7 +90,7 @@ public class GameManager {
                         ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-leave-subtitle")), 20, 80, 20);
             }
             PlayerInventoryHandler.clearInventory(player);
-            if (!(player.hasPermission("redlight.gamemode.bypass")||player.hasPermission("redlight.*")||player.isOp())){
+            if (!(player.hasPermission("redlight.bypass.gamemode")||player.hasPermission("redlight.*")||player.isOp())){
                 player.setGameMode(GameMode.SURVIVAL);
             }
             player.setInvulnerable(true);

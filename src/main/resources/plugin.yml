@@ -8,3 +8,4 @@ commands:
   redlight:
     description: The main command.
     usage: /redlight <command>
+    aliases: rd

@@ -27,12 +27,16 @@ public class JoinGame extends SubCommand {
     @Override
     public void perform(Player player, String[] args) {
         UUID uuid = player.getUniqueId();
-        if (!(GameManager.getGame1().contains(uuid))){
-            GameManager.addToGame1(player);
-            PlayerInventoryHandler.storeAndClearInventory(player);
-            GameManager.startGameArena1(player);
+        if (!(RedLightGreenLight.getPlugin().getConfig().getList("Disabled-worlds").contains(player.getWorld().getName()))){
+            if (!(GameManager.getGame1().contains(uuid))){
+                GameManager.addToGame1(player);
+                PlayerInventoryHandler.storeAndClearInventory(player);
+                GameManager.startGameArena1(player);
+            }else {
+                player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Failed-join-arena")));
+            }
         }else {
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Failed-join-arena")));
+            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Disabled-world-message")));
         }
     }
 

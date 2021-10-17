@@ -15,7 +15,7 @@
 Wipe-inventory-on-join: true
 
 #Do you want RedLight-GreenLight to handle server join spawn location (World/Server join lobby)?
-Handle-player-join-spawn-event: false
+Handle-player-join-spawn-event: true
 
 #Do you want to send a welcome title for players joining the server?
 Send-welcome-title: true
@@ -23,15 +23,21 @@ Send-welcome-title: true
 Welcome-player-title: "&a&lWelcome To RedLight-GreenLight!"
 Welcome-player-subtitle: "&ePlease use /redlight join"
 
+#Do you want to disable the plugin use in certain worlds?
+#To not use this, comment out the world's listed below and add '[]' after 'Disabled-worlds:'
+Disabled-worlds:
+  - "world_nether"
+  - "world_the_end"
+
 #Do you want the player to be made invulnerable on join?
 Join-player-invulnerable: true
 
 #World/server join lobby position
 #Join-lobby-position:
-lobby-x: -275.5
-lobby-y: 69.2
-lobby-z: 89.5
-lobby-yaw: 180.0
+lobby-x: -233.0
+lobby-y: 52.2
+lobby-z: 24.0
+lobby-yaw: 0.0
 lobby-pitch: -0.0
 
 #List below commands that are blocked during gameplay.
@@ -60,14 +66,16 @@ Arena-start-size: 4
 
 #Set the arena starting position for the players
 #Arena-position:
-Arena-Start-x: -290.5
-Arena-Start-y: 72.2
-Arena-Start-z: 80.5
-Arena-Start-yaw: -90.0
-Arena-Start-pitch: -0.0
+Arena-Start-x: -220.5
+Arena-Start-y: 50.2
+Arena-Start-z: 161.5
+Arena-Start-yaw: 0.0
+Arena-Start-pitch: -6.0
 
 #The following section sets the detection of the winning zone.
 #Simply make the floor of the winning area out of the below block combination.
+#EXAMPLE: Block under player -          COAL_BLOCK
+#EXAMPLE: Block under (-Y) COAL_BLOCK - GOLD_BLOCK
 Top-trigger-block: COAL_BLOCK
 Bottom-trigger-block: GOLD_BLOCK
 
@@ -102,7 +110,7 @@ Command-send-error: "&cSorry, that command cannot be run during gameplay!"
 Failed-join-arena: "&cYou are already part of a game.\n&cUse &e/redlight leave &cto return to main lobby."
 Successful-leave-game: "&aYou left the game and were teleported back to the lobby!"
 Player-not-in-game: "&cYou are not currently in a &4&lRedLight&r&c-&a&lGreenLight &r&cgame!"
-Waiting-for-enough-players: "&eYou are now in the queue to play.&r\n&eNow waiting for enough players to begin the game."
+Waiting-for-enough-players: "&eYou are now in the queue to play.&r\n&eNow waiting for enough players to begin the game.&r\n&eUse &b/redlight leave &eto leave the game."
 
 Game-start-title: "&a&lLet The Race Begin!"
 Game-start-subtitle: "&bBeat everyone to the finish line!"
@@ -125,3 +133,34 @@ Syntax-error-3: "&4redlight help"
 
 Plugin-reload-successful: "&aThe config file has been reloaded!"
 Reload-command-no-permission: "&4You do not have the permission &eredlight.reload &4needed to run that command"
+Disabled-world-message: "&4&lRedLight&r&c-&a&lGreenLight has been disabled in this world."
+
+#Plugin-update-available:
+Update-1: "&4*-------------------------------------------*"
+Update-2: "&bRedLight-GreenLight &c- A new version is available!"
+Update-3: "&4*-------------------------------------------*"
+
+#Plugin-no-new-update:
+No-update-1: "&a*-------------------------------------------*"
+No-update-2: "&bRedLight-GreenLight &a- Plugin is up to date!"
+No-update-3: "&a*-------------------------------------------*"
+Update-check-failure: "&bRedLight-GreenLight &4- Unable to check for updates! - &c"
+
+#Plugin-help-chat-menu
+Help-1: "&e[--------------- &b[RedLight-GreenLight] &e----------------]"
+Help-2: "&f/redlight join &7- &dThis command joins the game."
+Help-3: "&f/redlight leave &7- &dThis command leaves the game."
+Help-4: "&f/redlight help &7- &dThis command shows this help menu."
+Help-5: "&f/redlight reload &7- &dThis command reloads the config."
+Help-6: "&e[------------------- &bPermissions &e---------------------]"
+Help-7: "&f                               redlight.*"
+Help-8: "&f                               redlight.help"
+Help-9: "&f                               redlight.reload"
+Help-10: "&f                               redlight.bypass.joinwipe"
+Help-11: "&f                               redlight.bypass.commands"
+Help-12: "&f                               redlight.bypass.gamemode"
+Help-13: "&e[---------------------------------------------------]"
+
+Help-command-no-permission: "&4You do not have the permission &eredlight.help &4needed to run that command"
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

@@ -69,7 +69,7 @@ public class CountDownTasksUtils {
                         player.setInvulnerable(true);
                         player.setHealth(20.0);
                         player.setFoodLevel(20);
-                        if (!(player.hasPermission("redlight.gamemode.bypass")||player.hasPermission("redlight.*")||player.isOp())){
+                        if (!(player.hasPermission("redlight.bypass.gamemode")||player.hasPermission("redlight.*")||player.isOp())){
                             player.setGameMode(GameMode.ADVENTURE);
                         }
                         player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-start-title")),
