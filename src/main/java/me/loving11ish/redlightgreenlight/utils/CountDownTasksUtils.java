@@ -1,11 +1,10 @@
 package me.loving11ish.redlightgreenlight.utils;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,15 +17,17 @@ public class CountDownTasksUtils {
     private static Integer taskID1;
     private static Integer taskID2;
     public static Integer taskID3;
+    public static Integer taskID4;
+
+    final static double x = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-x");
+    final static double y = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-y");
+    final static double z = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-z");
+    final static float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-yaw");
+    final static float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-pitch");
 
     public static void runTaskStartArena1(){
         taskID1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
             Integer time = 10;
-            final double x = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-x");
-            final double y = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-y");
-            final double z = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-z");
-            final float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-yaw");
-            final float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-pitch");
             @Override
             public void run() {
                 if (time == 1){
@@ -37,8 +38,10 @@ public class CountDownTasksUtils {
                         Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
                         player.teleport(location);
                         player.setWalkSpeed(0.0f);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 10, 100000, false, false, false));
                     }
                     CountDownTasksUtils.runTaskGoGame1();
+                    GameManager.setGameRunning(1);
                     Bukkit.getScheduler().cancelTask(taskID1);
                     return;
                 }
@@ -76,6 +79,7 @@ public class CountDownTasksUtils {
                                 ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-start-subtitle")), 20, 80, 20);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 2, 2);
                         player.setWalkSpeed(0.2f);
+                        player.removePotionEffect(PotionEffectType.JUMP);
                         GameManager.addToRound(player);
                     }
                     game1Timer();
@@ -165,7 +169,8 @@ public class CountDownTasksUtils {
                     time --;
                     Random random = new Random();
                     int r = random.nextInt(10);
-                    if (r == 5 || r == 1) {
+                    if (r == 5 || r == 8) {
+                        coolDownTimer();
                         GameManager.setLightgreen(1);
                         ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
                         for (int i = 0; i < playersInGame.size(); i++) {
@@ -186,11 +191,28 @@ public class CountDownTasksUtils {
                     if (GameManager.getGame1().size() == 0 || GameManager.getPlayersInRound().size() == 0){
                         GameManager.getPlayersInRound().clear();
                         GameManager.getGame1().clear();
+                        GameManager.setGameRunning(0);
                         Bukkit.getScheduler().cancelTask(taskID3);
                         return;
                     }
                 }
             }
         }, 0, 20);
+    }
+
+    public static void coolDownTimer(){
+        taskID4 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
+            Integer time = 2;
+            @Override
+            public void run() {
+                if (time == 1){
+                    Bukkit.getScheduler().cancelTask(taskID4);
+                    return;
+                }
+                else {
+                    time --;
+                }
+            }
+        }, 0, 10);
     }
 }

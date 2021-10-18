@@ -13,6 +13,7 @@ public class GameManager {
     private static Map<UUID, Player> game1 = new HashMap<>();
     private static Map<UUID, Player> round = new HashMap<>();
     public static Integer lightgreen = 0;
+    public static Integer gamerunning = 0;
 
     public static void addToGame1(Player player){
 
@@ -49,6 +50,14 @@ public class GameManager {
 
     public static void setLightgreen(Integer lightgreen) {
         GameManager.lightgreen = lightgreen;
+    }
+
+    public static Integer getGameRunning() {
+        return gamerunning;
+    }
+
+    public static void setGameRunning(Integer gamerunning) {
+        GameManager.gamerunning = gamerunning;
     }
 
     public static void teleportToLobby(Player player){
@@ -97,6 +106,7 @@ public class GameManager {
             player.setFoodLevel(20);
             GameManager.leaveGame1(player);
             GameManager.leaveRound(player);
+            GameManager.setGameRunning(0);
         }
     }
 }

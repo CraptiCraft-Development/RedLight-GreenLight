@@ -2,6 +2,7 @@ package me.loving11ish.redlightgreenlight.events;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
+import me.loving11ish.redlightgreenlight.utils.CountDownTasksUtils;
 import me.loving11ish.redlightgreenlight.utils.GameManager;
 import me.loving11ish.redlightgreenlight.utils.PlayerInventoryHandler;
 import org.bukkit.Bukkit;
@@ -32,6 +33,9 @@ public class PlayerMove implements Listener {
         if (GameManager.getGame1().contains(uuid)){
             if (GameManager.getPlayersInRound().contains(uuid)){
                 if (!(GameManager.getLightgreen().equals(0))){
+                    if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
+                        return;
+                    }
                     player.setGameMode(GameMode.SURVIVAL);
                     player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-title")),
                             ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-subtitle")),

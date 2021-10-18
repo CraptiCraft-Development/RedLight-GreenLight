@@ -111,6 +111,7 @@ Failed-join-arena: "&cYou are already part of a game.\n&cUse &e/redlight leave &
 Successful-leave-game: "&aYou left the game and were teleported back to the lobby!"
 Player-not-in-game: "&cYou are not currently in a &4&lRedLight&r&c-&a&lGreenLight &r&cgame!"
 Waiting-for-enough-players: "&eYou are now in the queue to play.&r\n&eNow waiting for enough players to begin the game.&r\n&eUse &b/redlight leave &eto leave the game."
+Game-already-running: "&cSorry there is already a &4&lRedLight&r&c-&a&lGreenLight &r&cgame running!"
 
 Game-start-title: "&a&lLet The Race Begin!"
 Game-start-subtitle: "&bBeat everyone to the finish line!"
