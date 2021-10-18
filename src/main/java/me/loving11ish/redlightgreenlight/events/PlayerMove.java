@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import java.util.List;
 import java.util.UUID;
 
-import static me.loving11ish.redlightgreenlight.utils.CountDownTasksUtils.taskID3;
 import static org.bukkit.Bukkit.getServer;
 
 public class PlayerMove implements Listener {
@@ -33,24 +32,6 @@ public class PlayerMove implements Listener {
         if (GameManager.getGame1().contains(uuid)){
             if (GameManager.getPlayersInRound().contains(uuid)){
                 if (!(GameManager.getLightgreen().equals(0))){
-                    if (!(GameManager.getGame1().size() == RedLightGreenLight.getPlugin().getConfig().getInt("Arena-start-size"))){
-                        Bukkit.getScheduler().cancelTask(taskID3);
-                        player.setGameMode(GameMode.SURVIVAL);
-                        player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-title")),
-                                ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-subtitle")),
-                                10, 30, 10);
-                        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
-                        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")){
-                            for (String string : losecommands) {
-                                getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
-                            }
-                        }
-                        GameManager.leaveRound(player);
-                        GameManager.leaveGame1(player);
-                        GameManager.teleportToLobby(player);
-                        PlayerInventoryHandler.clearInventory(player);
-                        PlayerInventoryHandler.restoreInventory(player);
-                        }
                     player.setGameMode(GameMode.SURVIVAL);
                     player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-title")),
                             ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-subtitle")),

@@ -183,17 +183,9 @@ public class CountDownTasksUtils {
                             player.sendMessage(ColorUtils.translateColorCodes("&a&lGreen Light"));
                         }
                     }
-                    if (!(GameManager.getGame1().size() == RedLightGreenLight.getPlugin().getConfig().getInt("Arena-start-size"))){
-                        ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                        for (int i = 0; i < playersInGame.size(); i++) {
-                            UUID uuid = playersInGame.get(i);
-                            Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                            getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
-                            player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-title")),
-                                    ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-subtitle")),
-                                    10, 30, 10);
-                        }
-                        GameManager.endGameArena1();
+                    if (GameManager.getGame1().size() == 0 || GameManager.getPlayersInRound().size() == 0){
+                        GameManager.getPlayersInRound().clear();
+                        GameManager.getGame1().clear();
                         Bukkit.getScheduler().cancelTask(taskID3);
                         return;
                     }
