@@ -102,7 +102,7 @@ public class GameManager {
             if (!(player.hasPermission("redlight.bypass.gamemode")||player.hasPermission("redlight.*")||player.isOp())){
                 player.setGameMode(GameMode.SURVIVAL);
             }
-            player.setInvulnerable(true);
+            player.setInvulnerable(RedLightGreenLight.getPlugin().getConfig().getBoolean("Leave-player-invulnerable"));
             player.setFoodLevel(20);
             GameManager.leaveGame1(player);
             GameManager.leaveRound(player);

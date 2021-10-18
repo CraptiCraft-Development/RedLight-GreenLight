@@ -32,6 +32,9 @@ Disabled-worlds:
 #Do you want the player to be made invulnerable on join?
 Join-player-invulnerable: true
 
+#Do you want the player to be made invulnerable on game leave?
+Leave-player-invulnerable: true
+
 #World/server join lobby position
 #Join-lobby-position:
 lobby-x: -233.0

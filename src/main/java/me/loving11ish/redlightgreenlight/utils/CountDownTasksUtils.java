@@ -170,14 +170,16 @@ public class CountDownTasksUtils {
                     Random random = new Random();
                     int r = random.nextInt(10);
                     if (r == 5 || r == 8) {
-                        coolDownTimer();
-                        GameManager.setLightgreen(1);
-                        ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                        for (int i = 0; i < playersInGame.size(); i++) {
-                            UUID uuid = playersInGame.get(i);
-                            Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                            player.sendTitle(ColorUtils.translateColorCodes("&c&lRed Light"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
-                            player.sendMessage(ColorUtils.translateColorCodes("&c&lRed Light"));
+                        if (time < 590){
+                            coolDownTimer();
+                            GameManager.setLightgreen(1);
+                            ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
+                            for (int i = 0; i < playersInGame.size(); i++) {
+                                UUID uuid = playersInGame.get(i);
+                                Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
+                                player.sendTitle(ColorUtils.translateColorCodes("&c&lRed Light"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
+                                player.sendMessage(ColorUtils.translateColorCodes("&c&lRed Light"));
+                            }
                         }
                     }else {
                         GameManager.setLightgreen(0);
@@ -213,6 +215,6 @@ public class CountDownTasksUtils {
                     time --;
                 }
             }
-        }, 0, 10);
+        }, 0, 12);
     }
 }
