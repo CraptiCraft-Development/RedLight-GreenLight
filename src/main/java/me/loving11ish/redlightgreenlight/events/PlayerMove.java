@@ -72,6 +72,7 @@ public class PlayerMove implements Listener {
                     player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-win-title")),
                             ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-win-subtitle")),
                             10, 30, 10);
+                    getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:firework_rocket ~ ~ ~");
                     if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-win-commands")){
                         for (String string : wincommands) {
                             getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));

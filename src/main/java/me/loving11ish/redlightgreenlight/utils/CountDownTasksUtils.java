@@ -69,7 +69,7 @@ public class CountDownTasksUtils {
                     for (int i = 0; i < playersInGame.size(); i++) {
                         UUID uuid = playersInGame.get(i);
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                        player.setInvulnerable(true);
+                        player.setInvulnerable(RedLightGreenLight.getPlugin().getConfig().getBoolean("Join-player-invulnerable"));
                         player.setHealth(20.0);
                         player.setFoodLevel(20);
                         if (!(player.hasPermission("redlight.bypass.gamemode")||player.hasPermission("redlight.*")||player.isOp())){
