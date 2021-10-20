@@ -3,10 +3,14 @@ package me.loving11ish.redlightgreenlight.commands.consolecommands;
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.commands.ConsoleCommand;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.logging.Logger;
 
 public class ConsoleHelp extends ConsoleCommand {
+
+    private PluginDescriptionFile pluginInfo = RedLightGreenLight.getPlugin().getDescription();
+    private String pluginVersion = pluginInfo.getVersion();
 
     Logger logger = RedLightGreenLight.getPlugin().getLogger();
 
@@ -40,5 +44,7 @@ public class ConsoleHelp extends ConsoleCommand {
         logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-11")));
         logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-12")));
         logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-13")));
+        logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-14").replace("%version%", pluginVersion)));
+        logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-15")));
     }
 }

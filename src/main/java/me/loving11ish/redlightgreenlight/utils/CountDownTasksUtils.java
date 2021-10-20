@@ -102,7 +102,7 @@ public class CountDownTasksUtils {
 
     public static void game1Timer() {
         taskID3 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
-            Integer time = 600;
+            Integer time = 300;
             @Override
             public void run() {
                 if (time == 1) {
@@ -112,7 +112,8 @@ public class CountDownTasksUtils {
                         UUID uuid = playersInGame.get(i);
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
-                        player.sendTitle(ColorUtils.translateColorCodes("&eNo One Won The Game!"), ColorUtils.translateColorCodes("&a&lGG's All Round"), 10, 30, 10);
+                        player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-title")),
+                                ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-subtitle")), 10, 30, 10);
                     }
                     Bukkit.getScheduler().cancelTask(taskID3);
                     return;
@@ -169,16 +170,19 @@ public class CountDownTasksUtils {
                     time --;
                     Random random = new Random();
                     int r = random.nextInt(10);
-                    if (r == 5 || r == 8) {
-                        if (time < 590){
+                    if (r == 5 || r == 8 || r == 2) {
+                        if (time < 295){
                             coolDownTimer();
                             GameManager.setLightgreen(1);
                             ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
                             for (int i = 0; i < playersInGame.size(); i++) {
                                 UUID uuid = playersInGame.get(i);
                                 Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                                player.sendTitle(ColorUtils.translateColorCodes("&c&lRed Light"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
-                                player.sendMessage(ColorUtils.translateColorCodes("&c&lRed Light"));
+                                if (RedLightGreenLight.getPlugin().getConfig().getBoolean("RedLight-title-enable")){
+                                    player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("RedLight-message")),
+                                            ColorUtils.translateColorCodes(" "), 10, 30, 10);
+                                }
+                                player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("RedLight-message")));
                             }
                         }
                     }else {
@@ -187,12 +191,13 @@ public class CountDownTasksUtils {
                         for (int i = 0; i < playersInGame.size(); i++) {
                             UUID uuid = playersInGame.get(i);
                             Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                            player.sendMessage(ColorUtils.translateColorCodes("&a&lGreen Light"));
+                            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("GreenLight-message")));
                         }
                     }
                     if (GameManager.getGame1().size() == 0 || GameManager.getPlayersInRound().size() == 0){
                         GameManager.getPlayersInRound().clear();
                         GameManager.getGame1().clear();
+                        GameManager.setLightgreen(0);
                         GameManager.setGameRunning(0);
                         Bukkit.getScheduler().cancelTask(taskID3);
                         return;
@@ -215,6 +220,6 @@ public class CountDownTasksUtils {
                     time --;
                 }
             }
-        }, 0, 12);
+        }, 0, RedLightGreenLight.getPlugin().getConfig().getInt("RedLight-delay-checking-time"));
     }
 }

@@ -26,8 +26,10 @@ public class PlayerCommand implements Listener {
                 String command = message[0];
 
                 for (String string : bannedcommands) {
-                    if (command.equalsIgnoreCase(string)) event.setCancelled(true);
-                    player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Command-send-error")));
+                    if (command.equalsIgnoreCase(string)){
+                        event.setCancelled(true);
+                        player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Command-send-error")));
+                    }
                 }
             }
         }

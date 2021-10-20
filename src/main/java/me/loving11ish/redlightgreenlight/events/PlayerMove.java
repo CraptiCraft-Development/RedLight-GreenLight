@@ -46,11 +46,11 @@ public class PlayerMove implements Listener {
                             getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
                         }
                     }
-                    GameManager.leaveRound(player);
-                    GameManager.leaveGame1(player);
                     GameManager.teleportToLobby(player);
                     PlayerInventoryHandler.clearInventory(player);
                     PlayerInventoryHandler.restoreInventory(player);
+                    GameManager.leaveRound(player);
+                    GameManager.leaveGame1(player);
                 }
             }
         }
@@ -79,8 +79,11 @@ public class PlayerMove implements Listener {
                         }
                     }
                     GameManager.teleportToLobby(player);
+                    PlayerInventoryHandler.clearInventory(player);
+                    PlayerInventoryHandler.restoreInventory(player);
                     GameManager.leaveRound(player);
                     GameManager.leaveGame1(player);
+
                 }
             }
         }

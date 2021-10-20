@@ -4,10 +4,15 @@ import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.commands.SubCommand;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.List;
 
 public class Help extends SubCommand {
+
+    private PluginDescriptionFile pluginInfo = RedLightGreenLight.getPlugin().getDescription();
+    private String pluginVersion = pluginInfo.getVersion();
+
     @Override
     public String getName() {
         return "help";
@@ -39,6 +44,8 @@ public class Help extends SubCommand {
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-11")));
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-12")));
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-13")));
+            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-14").replace("%version%", pluginVersion)));
+            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-15")));
 
         }else {
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-command-no-permission")));

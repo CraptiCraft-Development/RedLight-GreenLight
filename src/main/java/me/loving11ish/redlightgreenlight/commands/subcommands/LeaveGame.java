@@ -31,9 +31,13 @@ public class LeaveGame extends SubCommand {
         UUID uuid = player.getUniqueId();
         if (!(RedLightGreenLight.getPlugin().getConfig().getList("Disabled-worlds").contains(player.getWorld().getName()))){
             if (GameManager.getGame1().contains(uuid)){
+                if (GameManager.getPlayersInRound().contains(uuid)){
+                    GameManager.leaveRound(player);
+                }
                 GameManager.teleportToLobby(player);
-                GameManager.leaveGame1(player);
+                PlayerInventoryHandler.clearInventory(player);
                 PlayerInventoryHandler.restoreInventory(player);
+                GameManager.leaveGame1(player);
                 player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Successful-leave-game")));
             }else {
                 player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Player-not-in-game")));

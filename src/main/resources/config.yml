@@ -12,7 +12,7 @@
 
 #Do you want players inventories to be wiped on join?
 #This can bypassed using permission node 'redlight.bypass.joinwipe'
-Wipe-inventory-on-join: true
+Wipe-inventory-on-join: false
 
 #Do you want RedLight-GreenLight to handle server join spawn location (World/Server join lobby)?
 Handle-player-join-spawn-event: true
@@ -45,6 +45,7 @@ lobby-pitch: -0.0
 
 #List below commands that are blocked during gameplay.
 #This can bypassed using permission node 'redlight.bypass.commands'
+#Any changes made to this list require a server restart or reload to take effect!
 Blocked-commands-in-game:
   - "/spawn"
   - "/home"
@@ -82,9 +83,17 @@ Arena-Start-pitch: -6.0
 Top-trigger-block: COAL_BLOCK
 Bottom-trigger-block: GOLD_BLOCK
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Below sets how long of a delay there is before the RedLight movement detection checks for movement.#
+#This can be changed from '1 - 19'.  ANYTHING OVER 19 WILL CAUSE ERRORS!                            #
+#                    DO NOT CHANGE THIS UNLESS YOU KNOW WHAT YOU'RE DOING!                          #
+RedLight-delay-checking-time: 12                                                                    #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
 #Do you want to run any commands when a player wins?
 Run-win-commands: true
 #Enter the list of commands to be run below. (All commands are executed by the console)
+#Any changes made to this list require a server restart or reload to take effect!
 Win-commands-list:
   - "xp add %player% 10 levels"
   - "effect give %player% minecraft:speed 10 1"
@@ -92,6 +101,7 @@ Win-commands-list:
 #Do you want to run any commands when a player loses?
 Run-lose-commands: true
 #Enter the list of commands to be run below. (All commands are executed by the console)
+#Any changes made to this list require a server restart or reload to take effect!
 Lose-commands-list:
   - "effect give %player% minecraft:poison 10 0"
 
@@ -115,6 +125,14 @@ Successful-leave-game: "&aYou left the game and were teleported back to the lobb
 Player-not-in-game: "&cYou are not currently in a &4&lRedLight&r&c-&a&lGreenLight &r&cgame!"
 Waiting-for-enough-players: "&eYou are now in the queue to play.&r\n&eNow waiting for enough players to begin the game.&r\n&eUse &b/redlight leave &eto leave the game."
 Game-already-running: "&cSorry there is already a &4&lRedLight&r&c-&a&lGreenLight &r&cgame running!"
+
+Round-end-title: "&eNo One Won The Game!"
+Round-end-subtitle: "&a&lGG's All Round"
+
+GreenLight-message: "&aGreen Light"
+#Do you want the RedLight message to be sent as a title & in chat?
+RedLight-title-enable: true
+RedLight-message: "&cRed Light"
 
 Game-start-title: "&a&lLet The Race Begin!"
 Game-start-subtitle: "&bBeat everyone to the finish line!"
@@ -164,6 +182,8 @@ Help-10: "&f                               redlight.bypass.joinwipe"
 Help-11: "&f                               redlight.bypass.commands"
 Help-12: "&f                               redlight.bypass.gamemode"
 Help-13: "&e[---------------------------------------------------]"
+Help-14: "&f                               Plugin Version: &a%version%"
+Help-15: "&e[---------------------------------------------------]"
 
 Help-command-no-permission: "&4You do not have the permission &eredlight.help &4needed to run that command"
 
