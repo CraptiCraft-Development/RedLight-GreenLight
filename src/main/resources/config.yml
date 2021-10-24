@@ -68,6 +68,9 @@ Blocked-commands-in-game:
 #How many players should be in the arena for the game to start?
 Arena-start-size: 4
 
+#How long do you want the total length of the game? (In seconds. 300 = 5 mins)
+Total-game-length: 300
+
 #Set the arena starting position for the players
 #Arena-position:
 Arena-Start-x: -220.5
@@ -76,8 +79,8 @@ Arena-Start-z: 161.5
 Arena-Start-yaw: 0.0
 Arena-Start-pitch: -6.0
 
-#The following section sets the detection of the winning zone.
-#Simply make the floor of the winning area out of the below block combination.
+#The following section sets the detection of the WINNING ZONE.
+#Simply make the floor of the WINNING ZONE out of the below block combination.
 #EXAMPLE: Block under player -          COAL_BLOCK
 #EXAMPLE: Block under (-Y) COAL_BLOCK - GOLD_BLOCK
 Top-trigger-block: COAL_BLOCK

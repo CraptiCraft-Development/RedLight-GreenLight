@@ -6,7 +6,7 @@
 
     <groupId>me.loving11ish</groupId>
     <artifactId>RedLightGreenLight</artifactId>
-    <version>1.6</version>
+    <version>1.7</version>
     <packaging>jar</packaging>
 
     <name>RedLightGreenLight</name>

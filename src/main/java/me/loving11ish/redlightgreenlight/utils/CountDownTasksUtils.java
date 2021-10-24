@@ -61,7 +61,7 @@ public class CountDownTasksUtils {
 
     public static void runTaskGoGame1(){
         taskID2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
-            Integer time = 5;
+            Integer time = 10;
             @Override
             public void run() {
                 if(time == 1){
@@ -102,7 +102,7 @@ public class CountDownTasksUtils {
 
     public static void game1Timer() {
         taskID3 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
-            Integer time = 300;
+            Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Total-game-length");
             @Override
             public void run() {
                 if (time == 1) {
@@ -171,7 +171,7 @@ public class CountDownTasksUtils {
                     Random random = new Random();
                     int r = random.nextInt(10);
                     if (r == 5 || r == 8 || r == 2) {
-                        if (time < 295){
+                        if (time < RedLightGreenLight.getPlugin().getConfig().getInt("Total-game-length") -5){
                             coolDownTimer();
                             GameManager.setLightgreen(1);
                             ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
