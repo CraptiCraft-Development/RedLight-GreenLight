@@ -74,7 +74,7 @@ Total-game-length: 300
 #Set the arena starting position for the players
 #Arena-position:
 Arena-Start-x: -220.5
-Arena-Start-y: 50.2
+Arena-Start-y: 50.0
 Arena-Start-z: 161.5
 Arena-Start-yaw: 0.0
 Arena-Start-pitch: -6.0

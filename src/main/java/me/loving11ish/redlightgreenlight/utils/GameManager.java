@@ -14,6 +14,7 @@ public class GameManager {
     private static Map<UUID, Player> round = new HashMap<>();
     public static Integer lightgreen = 0;
     public static Integer gamerunning = 0;
+    public static Integer countdown = 0;
 
     public static void addToGame1(Player player){
 
@@ -54,6 +55,14 @@ public class GameManager {
 
     public static Integer getGameRunning() {
         return gamerunning;
+    }
+
+    public static Integer getCountDown() {
+        return countdown;
+    }
+
+    public static void setCountDown(Integer countdown) {
+        GameManager.countdown = countdown;
     }
 
     public static void setGameRunning(Integer gamerunning) {

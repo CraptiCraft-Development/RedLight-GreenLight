@@ -26,6 +26,17 @@ public class PlayerMove implements Listener {
 
 
     @EventHandler
+    public void countDownPlayerMove(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+        if (GameManager.getGame1().contains(uuid)) {
+            if (GameManager.getCountDown().equals(1)){
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
@@ -33,6 +44,9 @@ public class PlayerMove implements Listener {
         if (GameManager.getGame1().contains(uuid)){
             if (GameManager.getPlayersInRound().contains(uuid)){
                 if (!(GameManager.getLightgreen().equals(0))){
+                    if (!(GameManager.getCountDown().equals(0))){
+                        return;
+                    }
                     if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
                         return;
                     }

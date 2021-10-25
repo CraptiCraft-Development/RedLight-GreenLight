@@ -1,6 +1,8 @@
 package me.loving11ish.redlightgreenlight.utils;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -42,6 +44,7 @@ public class CountDownTasksUtils {
                     }
                     CountDownTasksUtils.runTaskGoGame1();
                     GameManager.setGameRunning(1);
+                    GameManager.setCountDown(1);
                     Bukkit.getScheduler().cancelTask(taskID1);
                     return;
                 }
@@ -51,7 +54,8 @@ public class CountDownTasksUtils {
                     for (int i = 0; i < playersInGame.size(); i++) {
                         UUID uuid = playersInGame.get(i);
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                        player.sendTitle(ColorUtils.translateColorCodes("&c&lGame Starting In:"), ColorUtils.translateColorCodes("&c" + time), 10, 10, 10);
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorUtils.translateColorCodes("&c&lGame Starting In: ") + ColorUtils.translateColorCodes("&c") + time));
+                        //player.sendTitle(ColorUtils.translateColorCodes("&c&lGame Starting In:"), ColorUtils.translateColorCodes("&c" + time), 10, 10, 10);
                         player.playSound(player.getLocation(), Sound.BLOCK_END_PORTAL_FRAME_FILL, 2, 2);
                     }
                 }
@@ -80,6 +84,7 @@ public class CountDownTasksUtils {
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 2, 2);
                         player.setWalkSpeed(0.2f);
                         player.removePotionEffect(PotionEffectType.JUMP);
+                        GameManager.setCountDown(0);
                         GameManager.addToRound(player);
                     }
                     game1Timer();
@@ -92,7 +97,8 @@ public class CountDownTasksUtils {
                     for (int i = 0; i < playersInGame.size(); i++) {
                         UUID uuid = playersInGame.get(i);
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                        player.sendTitle(ColorUtils.translateColorCodes("&c&lRound Commencing in:"), ColorUtils.translateColorCodes("&c" + time), 10, 10, 10);
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorUtils.translateColorCodes("&c&lRound Commencing in: ") + ColorUtils.translateColorCodes("&c") + time));
+                        //player.sendTitle(ColorUtils.translateColorCodes("&c&lRound Commencing in:"), ColorUtils.translateColorCodes("&c" + time), 10, 10, 10);
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, 2);
                     }
                 }
