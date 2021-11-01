@@ -48,5 +48,8 @@ public class ConsoleHelp extends ConsoleCommand {
         logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-15").replace("%version%", pluginVersion)));
         logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-16").replace("%version%", pluginVersion)));
         logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-17").replace("%version%", pluginVersion)));
+        logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-18").replace("%version%", pluginVersion)));
+        logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-19").replace("%version%", pluginVersion)));
+
     }
 }

@@ -97,7 +97,6 @@ public class CountDownTasksUtils {
                         UUID uuid = playersInGame.get(i);
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorUtils.translateColorCodes("&c&lRound Commencing in: ") + ColorUtils.translateColorCodes("&c") + time));
-                        //player.sendTitle(ColorUtils.translateColorCodes("&c&lRound Commencing in:"), ColorUtils.translateColorCodes("&c" + time), 10, 10, 10);
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, 2);
                     }
                 }

@@ -3,6 +3,7 @@ package me.loving11ish.redlightgreenlight.commands;
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.commands.consolecommands.ConsoleHelp;
 import me.loving11ish.redlightgreenlight.commands.consolecommands.ConsoleJoinAll;
+import me.loving11ish.redlightgreenlight.commands.consolecommands.ConsoleLeaveAll;
 import me.loving11ish.redlightgreenlight.commands.consolecommands.ConsoleReload;
 import me.loving11ish.redlightgreenlight.commands.subcommands.*;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
@@ -25,10 +26,12 @@ public class CommandManager implements TabExecutor {
         //Get the subcommands so we can access them in the command manager class(here)
         consolecommands.add(new ConsoleReload());
         consolecommands.add(new ConsoleJoinAll());
+        consolecommands.add(new ConsoleLeaveAll());
         consolecommands.add(new ConsoleHelp());
         subcommands.add(new Reload());
         subcommands.add(new JoinGame());
         subcommands.add(new LeaveGame());
+        subcommands.add(new LeaveAll());
         subcommands.add(new JoinAll());
         subcommands.add(new Help());
     }

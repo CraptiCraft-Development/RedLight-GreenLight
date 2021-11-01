@@ -141,6 +141,7 @@ public class GameManager {
             }
             player.setInvulnerable(RedLightGreenLight.getPlugin().getConfig().getBoolean("Leave-player-invulnerable"));
             player.setFoodLevel(20);
+            GameManager.leaveSpectating(player);
         }
     }
 

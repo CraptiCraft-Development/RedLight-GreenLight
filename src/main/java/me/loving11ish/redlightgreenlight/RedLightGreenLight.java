@@ -61,6 +61,7 @@ public final class RedLightGreenLight extends JavaPlugin {
 
         //Register events here
         getServer().getPluginManager().registerEvents(new PlayerCommand(),this);
+        getServer().getPluginManager().registerEvents(new PlayerHungerChange(), this);
         getServer().getPluginManager().registerEvents(new PlayerInventoryAction(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);

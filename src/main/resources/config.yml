@@ -35,6 +35,12 @@ Join-player-invulnerable: true
 #Do you want the player to be made invulnerable on game leave?
 Leave-player-invulnerable: true
 
+#Do you want to disable ALL hunger loss?
+Disable-global-hunger-drain: false
+
+#Do you want to disable hunger loss ONLY for players in a RedLight-GreenLight game?
+Disable-in-game-hunger-drain: true
+
 #World/server join lobby position
 #Join-lobby-position:
 lobby-x: -233.0
@@ -141,6 +147,7 @@ Successful-leave-game: "&aYou left the game and were teleported back to the lobb
 Player-not-in-game: "&cYou are not currently in a &4&lRedLight&r&c-&a&lGreenLight &r&cgame!"
 Waiting-for-enough-players: "&eYou are now in the queue to play.&r\n&eNow waiting for enough players to begin the game.&r\n&eUse &b/redlight leave &eto leave the game."
 Game-already-running: "&cSorry there is already a &4&lRedLight&r&c-&a&lGreenLight &r&cgame running!"
+No-game-running: "&cSorry there is not currently a &4&lRedLight&r&c-&a&lGreenLight &r&cgame running!"
 Spectating-message: "&aYou are now spectating the arena! \n&aUse &b/redlight leave &a to return to spawn."
 
 Round-end-title: "&eNo One Won The Game!"
@@ -174,6 +181,7 @@ Plugin-reload-successful: "&aThe config file has been reloaded!"
 Reload-command-no-permission: "&4You do not have the permission &eredlight.reload &4needed to run that command"
 Disabled-world-message: "&4&lRedLight&r&c-&a&lGreenLight has been disabled in this world."
 Joinall-command-no-permission: "&4You do not have the permission &eredlight.command.joinall &4needed to run that command"
+Leaveall-command-no-permission: "&4You do not have the permission &eredlight.command.leaveall &4needed to run that command"
 
 #Plugin-update-available:
 Update-1: "&4*-------------------------------------------*"
@@ -191,19 +199,21 @@ Help-1: "&e[--------------- &b[RedLight-GreenLight] &e----------------]"
 Help-2: "&f/red join &7- &dThis command joins the game."
 Help-3: "&f/red leave &7- &dThis command leaves the game."
 Help-4: "&f/red joinall &7- &dThis command adds all players to the game."
-Help-5: "&f/red help &7- &dThis command shows this help menu."
-Help-6: "&f/red reload &7- &dThis command reloads the config."
-Help-7: "&e[------------------- &bPermissions &e---------------------]"
-Help-8: "&f                               redlight.*"
-Help-9: "&f                               redlight.help"
-Help-10: "&f                               redlight.reload"
-Help-11: "&f                               redlight.command.joinall"
-Help-12: "&f                               redlight.bypass.joinwipe"
-Help-13: "&f                               redlight.bypass.commands"
-Help-14: "&f                               redlight.bypass.gamemode"
-Help-15: "&e[---------------------------------------------------]"
-Help-16: "&f                               Plugin Version: &a%version%"
+Help-5: "&f/red leaveall &7- &dThis forces all players to leave the game."
+Help-6: "&f/red help &7- &dThis command shows this help menu."
+Help-7: "&f/red reload &7- &dThis command reloads the config."
+Help-8: "&e[------------------- &bPermissions &e---------------------]"
+Help-9: "&f                               redlight.*"
+Help-10: "&f                               redlight.help"
+Help-11: "&f                               redlight.reload"
+Help-12: "&f                               redlight.command.joinall"
+Help-13: "&f                               redlight.command.leaveall"
+Help-14: "&f                               redlight.bypass.joinwipe"
+Help-15: "&f                               redlight.bypass.commands"
+Help-16: "&f                               redlight.bypass.gamemode"
 Help-17: "&e[---------------------------------------------------]"
+Help-18: "&f                               Plugin Version: &a%version%"
+Help-19: "&e[---------------------------------------------------]"
 
 Help-command-no-permission: "&4You do not have the permission &eredlight.help &4needed to run that command"
 
