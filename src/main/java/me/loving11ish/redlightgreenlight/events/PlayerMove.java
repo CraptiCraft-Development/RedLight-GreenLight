@@ -60,9 +60,14 @@ public class PlayerMove implements Listener {
                             getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
                         }
                     }
-                    GameManager.teleportToLobby(player);
-                    PlayerInventoryHandler.clearInventory(player);
-                    PlayerInventoryHandler.restoreInventory(player);
+                    if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Losers-spectate-game")){
+                        GameManager.spectatorTeleportToArena(player);
+                        player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Spectating-message")));
+                    }else {
+                        GameManager.teleportToLobby(player);
+                        PlayerInventoryHandler.clearInventory(player);
+                        PlayerInventoryHandler.restoreInventory(player);
+                    }
                     GameManager.leaveRound(player);
                     GameManager.leaveGame1(player);
                 }

@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import java.util.UUID;
 
@@ -30,6 +31,14 @@ public class PlayerInventoryAction implements Listener {
     }
     @EventHandler
     public void onItemPlace(BlockPlaceEvent event){
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+        if (GameManager.getGame1().contains(uuid)){
+            event.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onOffHand(PlayerSwapHandItemsEvent event){
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         if (GameManager.getGame1().contains(uuid)){

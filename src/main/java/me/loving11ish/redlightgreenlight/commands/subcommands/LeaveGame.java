@@ -30,9 +30,12 @@ public class LeaveGame extends SubCommand {
     public void perform(Player player, String[] args) {
         UUID uuid = player.getUniqueId();
         if (!(RedLightGreenLight.getPlugin().getConfig().getList("Disabled-worlds").contains(player.getWorld().getName()))){
-            if (GameManager.getGame1().contains(uuid)){
+            if (GameManager.getGame1().contains(uuid)||GameManager.getSpectatingPlayers().contains(uuid)){
                 if (GameManager.getPlayersInRound().contains(uuid)){
                     GameManager.leaveRound(player);
+                }
+                if (GameManager.getSpectatingPlayers().contains(uuid)){
+                    GameManager.leaveSpectating(player);
                 }
                 GameManager.teleportToLobby(player);
                 PlayerInventoryHandler.clearInventory(player);

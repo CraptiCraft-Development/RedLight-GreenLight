@@ -5,14 +5,14 @@ import me.loving11ish.redlightgreenlight.utils.PlayerInventoryHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 
 import java.util.UUID;
 
-public class PlayerQuit implements Listener {
+public class PlayerKick implements Listener {
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event){
+    public void onPlayerKick(PlayerKickEvent event){
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         if (GameManager.getGame1().contains(uuid)){

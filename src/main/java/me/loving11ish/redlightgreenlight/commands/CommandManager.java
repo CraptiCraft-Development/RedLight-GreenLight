@@ -2,11 +2,9 @@ package me.loving11ish.redlightgreenlight.commands;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.commands.consolecommands.ConsoleHelp;
+import me.loving11ish.redlightgreenlight.commands.consolecommands.ConsoleJoinAll;
 import me.loving11ish.redlightgreenlight.commands.consolecommands.ConsoleReload;
-import me.loving11ish.redlightgreenlight.commands.subcommands.Help;
-import me.loving11ish.redlightgreenlight.commands.subcommands.JoinGame;
-import me.loving11ish.redlightgreenlight.commands.subcommands.LeaveGame;
-import me.loving11ish.redlightgreenlight.commands.subcommands.Reload;
+import me.loving11ish.redlightgreenlight.commands.subcommands.*;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,10 +24,12 @@ public class CommandManager implements TabExecutor {
     public CommandManager() {
         //Get the subcommands so we can access them in the command manager class(here)
         consolecommands.add(new ConsoleReload());
+        consolecommands.add(new ConsoleJoinAll());
         consolecommands.add(new ConsoleHelp());
         subcommands.add(new Reload());
         subcommands.add(new JoinGame());
         subcommands.add(new LeaveGame());
+        subcommands.add(new JoinAll());
         subcommands.add(new Help());
     }
 

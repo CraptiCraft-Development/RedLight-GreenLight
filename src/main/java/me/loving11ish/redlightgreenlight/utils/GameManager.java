@@ -12,12 +12,12 @@ public class GameManager {
 
     private static Map<UUID, Player> game1 = new HashMap<>();
     private static Map<UUID, Player> round = new HashMap<>();
+    private static Map<UUID, Player> spectating = new HashMap<>();
     public static Integer lightgreen = 0;
     public static Integer gamerunning = 0;
     public static Integer countdown = 0;
 
     public static void addToGame1(Player player){
-
         UUID uuid = player.getUniqueId();
         game1.put(uuid, player);
     }
@@ -43,6 +43,20 @@ public class GameManager {
 
     public static Set<UUID> getPlayersInRound(){
         return round.keySet();
+    }
+
+    public static void addToSpectating(Player player){
+        UUID uuid = player.getUniqueId();
+        spectating.put(uuid, player);
+    }
+
+    public static void leaveSpectating(Player player){
+        UUID uuid = player.getUniqueId();
+        spectating.remove(uuid);
+    }
+
+    public static Set<UUID> getSpectatingPlayers(){
+        return spectating.keySet();
     }
 
     public static Integer getLightgreen() {
@@ -83,12 +97,50 @@ public class GameManager {
         }
     }
 
+    public static void spectatorTeleportToArena(Player player){
+        double x = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-spectate-x");
+        double y = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-spectate-y");
+        double z = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-spectate-z");
+        float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-spectate-yaw");
+        float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-spectate-pitch");
+        Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
+        player.teleport(location);
+        player.setGameMode(GameMode.SPECTATOR);
+        GameManager.addToSpectating(player);
+    }
+
     public static void startGameArena1(Player player){
         if (getGame1().size() == RedLightGreenLight.getPlugin().getConfig().getInt("Arena-start-size")){
             CountDownTasksUtils.runTaskStartArena1();
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Joined-game")));
         }else {
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Waiting-for-enough-players")));
+        }
+    }
+
+    public static void endSpectatingGame(){
+        ArrayList<UUID> spectators = new ArrayList<>(GameManager.getSpectatingPlayers());
+        for (int i = 0; i < spectators.size(); i++){
+            UUID uuid = spectators.get(i);
+            Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
+            double x = RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-x");
+            double y = RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-y");
+            double z = RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-z");
+            float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-yaw");
+            float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-pitch");
+            Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
+            player.teleport(location);
+            if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Show-leave-game-title")){
+                player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-leave-title")),
+                        ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-leave-subtitle")), 20, 80, 20);
+            }
+            PlayerInventoryHandler.clearInventory(player);
+            PlayerInventoryHandler.restoreInventory(player);
+            if (!(player.hasPermission("redlight.bypass.gamemode")||player.hasPermission("redlight.*")||player.isOp())){
+                player.setGameMode(GameMode.SURVIVAL);
+            }
+            player.setInvulnerable(RedLightGreenLight.getPlugin().getConfig().getBoolean("Leave-player-invulnerable"));
+            player.setFoodLevel(20);
         }
     }
 

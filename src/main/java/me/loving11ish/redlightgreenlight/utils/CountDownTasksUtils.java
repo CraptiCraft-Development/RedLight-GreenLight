@@ -16,8 +16,8 @@ import static org.bukkit.Bukkit.getServer;
 
 public class CountDownTasksUtils {
 
-    private static Integer taskID1;
-    private static Integer taskID2;
+    public static Integer taskID1;
+    public static Integer taskID2;
     public static Integer taskID3;
     public static Integer taskID4;
 
@@ -29,7 +29,7 @@ public class CountDownTasksUtils {
 
     public static void runTaskStartArena1(){
         taskID1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
-            Integer time = 10;
+            Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Game-starting-countdown-length");
             @Override
             public void run() {
                 if (time == 1){
@@ -55,7 +55,6 @@ public class CountDownTasksUtils {
                         UUID uuid = playersInGame.get(i);
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorUtils.translateColorCodes("&c&lGame Starting In: ") + ColorUtils.translateColorCodes("&c") + time));
-                        //player.sendTitle(ColorUtils.translateColorCodes("&c&lGame Starting In:"), ColorUtils.translateColorCodes("&c" + time), 10, 10, 10);
                         player.playSound(player.getLocation(), Sound.BLOCK_END_PORTAL_FRAME_FILL, 2, 2);
                     }
                 }
@@ -201,10 +200,14 @@ public class CountDownTasksUtils {
                         }
                     }
                     if (GameManager.getGame1().size() == 0 || GameManager.getPlayersInRound().size() == 0){
+                        if (!(GameManager.getSpectatingPlayers().size() == 0)){
+                            GameManager.endSpectatingGame();
+                        }
                         GameManager.getPlayersInRound().clear();
                         GameManager.getGame1().clear();
                         GameManager.setLightgreen(0);
                         GameManager.setGameRunning(0);
+
                         Bukkit.getScheduler().cancelTask(taskID3);
                         return;
                     }

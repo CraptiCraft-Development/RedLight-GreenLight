@@ -4,11 +4,18 @@ import me.loving11ish.redlightgreenlight.commands.CommandManager;
 import me.loving11ish.redlightgreenlight.events.*;
 import me.loving11ish.redlightgreenlight.updatesystem.UpdateChecker;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
+import me.loving11ish.redlightgreenlight.utils.CountDownTasksUtils;
+import me.loving11ish.redlightgreenlight.utils.GameManager;
+import me.loving11ish.redlightgreenlight.utils.PlayerInventoryHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public final class RedLightGreenLight extends JavaPlugin {
@@ -17,6 +24,8 @@ public final class RedLightGreenLight extends JavaPlugin {
     private String pluginVersion = pluginInfo.getVersion();
     private static RedLightGreenLight plugin;
     Logger logger = this.getLogger();
+
+    public List<Player> onlinePlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
 
     @Override
     public void onEnable() {
@@ -56,6 +65,7 @@ public final class RedLightGreenLight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuit(),this);
+        getServer().getPluginManager().registerEvents(new PlayerKick(), this);
 
         //Plugin startup message
         logger.info("-------------------------------------------");
@@ -81,6 +91,36 @@ public final class RedLightGreenLight extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID1) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID1)){
+            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID1);
+        }
+        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID2) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID2)){
+            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID2);
+        }
+        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
+            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID4);
+        }
+        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID3) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID3)){
+            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID3);
+        }
+        for (int i = 0; i < onlinePlayers.size(); i++){
+            String onPlayerName = onlinePlayers.get(i).getName();
+            Player onlinePlayerName = Bukkit.getServer().getPlayer(onPlayerName);
+            UUID onlineUUID = onlinePlayerName.getUniqueId();
+            if (GameManager.getGame1().contains(onlineUUID)){
+                if (PlayerInventoryHandler.getItems().contains(onlineUUID) && PlayerInventoryHandler.getArmor().contains(onlineUUID)){
+                    PlayerInventoryHandler.clearInventory(onlinePlayerName);
+                    PlayerInventoryHandler.restoreInventory(onlinePlayerName);
+                }
+                if (GameManager.getPlayersInRound().contains(onlineUUID)){
+                    GameManager.leaveRound(onlinePlayerName);
+                }
+                GameManager.leaveGame1(onlinePlayerName);
+                if (GameManager.getSpectatingPlayers().contains(onlineUUID)){
+                    GameManager.leaveSpectating(onlinePlayerName);
+                }
+            }
+        }
     }
 
     public static RedLightGreenLight getPlugin(){

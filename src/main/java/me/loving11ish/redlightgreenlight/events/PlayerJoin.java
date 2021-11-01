@@ -28,6 +28,12 @@ public class PlayerJoin implements Listener {
         if (GameManager.getGame1().contains(uuid)){
             GameManager.leaveGame1(player);
         }
+        if (GameManager.getPlayersInRound().contains(uuid)){
+            GameManager.leaveRound(player);
+        }
+        if (GameManager.getSpectatingPlayers().contains(uuid)){
+            GameManager.leaveSpectating(player);
+        }
         if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Send-welcome-title")){
             player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Welcome-player-title")),
                     ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Welcome-player-subtitle")), 20, 100, 20);
