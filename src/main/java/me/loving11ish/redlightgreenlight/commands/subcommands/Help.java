@@ -50,7 +50,6 @@ public class Help extends SubCommand {
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-17").replace("%version%", pluginVersion)));
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-18").replace("%version%", pluginVersion)));
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-19").replace("%version%", pluginVersion)));
-
         }else {
             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-command-no-permission")));
         }

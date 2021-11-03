@@ -98,11 +98,11 @@ public final class RedLightGreenLight extends JavaPlugin {
         if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID2) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID2)){
             Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID2);
         }
-        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
-            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID4);
-        }
         if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID3) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID3)){
             Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID3);
+        }
+        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
+            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID4);
         }
         for (int i = 0; i < onlinePlayers.size(); i++){
             String onPlayerName = onlinePlayers.get(i).getName();

@@ -194,7 +194,7 @@ No-update-2: "&bRedLight-GreenLight &a- Plugin is up to date!"
 No-update-3: "&a*-------------------------------------------*"
 Update-check-failure: "&bRedLight-GreenLight &4- Unable to check for updates! - &c"
 
-#Plugin-help-chat-menu
+#Plugin-help-menu
 Help-1: "&e[--------------- &b[RedLight-GreenLight] &e----------------]"
 Help-2: "&f/red join &7- &dThis command joins the game."
 Help-3: "&f/red leave &7- &dThis command leaves the game."

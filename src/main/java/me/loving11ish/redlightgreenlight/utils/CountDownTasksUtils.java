@@ -9,6 +9,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,6 +21,8 @@ public class CountDownTasksUtils {
     public static Integer taskID2;
     public static Integer taskID3;
     public static Integer taskID4;
+
+    private static List<String> losecommands = RedLightGreenLight.getPlugin().getConfig().getStringList("Lose-commands-list");
 
     final static double x = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-x");
     final static double y = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-y");
@@ -109,19 +112,6 @@ public class CountDownTasksUtils {
             Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Total-game-length");
             @Override
             public void run() {
-                if (time == 1) {
-                    GameManager.endGameArena1();
-                    ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++){
-                        UUID uuid = playersInGame.get(i);
-                        Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
-                        player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-title")),
-                                ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-subtitle")), 10, 30, 10);
-                    }
-                    Bukkit.getScheduler().cancelTask(taskID3);
-                    return;
-                }
                 if (time == 30) {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
                     for (int i = 0; i < playersInGame.size(); i++) {
@@ -170,6 +160,25 @@ public class CountDownTasksUtils {
                         player.sendTitle(ColorUtils.translateColorCodes("&c&l2 Seconds Remaining!"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
                     }
                 }
+                if (time == 1) {
+                    ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
+                    for (int i = 0; i < playersInGame.size(); i++){
+                        UUID uuid = playersInGame.get(i);
+                        Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
+                        String target = player.getName();
+                        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
+                        player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-title")),
+                                ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-subtitle")), 10, 30, 10);
+                        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")){
+                            for (String string : losecommands) {
+                                getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
+                            }
+                        }
+                    }
+                    GameManager.endGameArena1();
+                    Bukkit.getScheduler().cancelTask(taskID3);
+                    return;
+                }
                 else {
                     time --;
                     Random random = new Random();
@@ -210,6 +219,7 @@ public class CountDownTasksUtils {
                         Bukkit.getScheduler().cancelTask(taskID3);
                         return;
                     }
+                    return;
                 }
             }
         }, 0, 20);
