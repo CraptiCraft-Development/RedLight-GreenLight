@@ -33,7 +33,7 @@ public final class RedLightGreenLight extends JavaPlugin {
         //Server version compatibility check
         if (!(Bukkit.getServer().getVersion().contains("1.13")||Bukkit.getServer().getVersion().contains("1.14")||
                 Bukkit.getServer().getVersion().contains("1.15")||Bukkit.getServer().getVersion().contains("1.16")||
-                Bukkit.getServer().getVersion().contains("1.17"))){
+                Bukkit.getServer().getVersion().contains("1.17")||Bukkit.getServer().getVersion().contains("1.18"))){
             logger.warning(ChatColor.RED + "-------------------------------------------");
             logger.warning(ChatColor.RED + "RedLightGreenLight - This plugin is only supported on the Minecraft versions listed below:");
             logger.warning(ChatColor.RED + "RedLightGreenLight - 1.13.x");
@@ -41,6 +41,7 @@ public final class RedLightGreenLight extends JavaPlugin {
             logger.warning(ChatColor.RED + "RedLightGreenLight - 1.15.x");
             logger.warning(ChatColor.RED + "RedLightGreenLight - 1.16.x");
             logger.warning(ChatColor.RED + "RedLightGreenLight - 1.17.x");
+            logger.warning(ChatColor.RED + "RedLightGreenLight - 1.18.x");
             logger.warning(ChatColor.RED + "RedLightGreenLight - Is now disabling!");
             logger.warning(ChatColor.RED + "-------------------------------------------");
             Bukkit.getPluginManager().disablePlugin(plugin);
@@ -92,18 +93,25 @@ public final class RedLightGreenLight extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID1) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID1)){
-            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID1);
+        try {
+            if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID1) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID1)){
+                Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID1);
+            }
+            if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID2) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID2)){
+                Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID2);
+            }
+            if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID3) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID3)){
+                Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID3);
+            }
+            if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
+                Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID4);
+            }
+        }catch (Exception e){
+            logger.info("-------------------------------------------");
+            logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin By Loving11ish");
+            logger.info(ChatColor.AQUA + "RedLightGreenLight - background tasks have disabled successfully");
         }
-        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID2) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID2)){
-            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID2);
-        }
-        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID3) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID3)){
-            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID3);
-        }
-        if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
-            Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID4);
-        }
+
         for (int i = 0; i < onlinePlayers.size(); i++){
             String onPlayerName = onlinePlayers.get(i).getName();
             Player onlinePlayerName = Bukkit.getServer().getPlayer(onPlayerName);
@@ -122,6 +130,9 @@ public final class RedLightGreenLight extends JavaPlugin {
                 }
             }
         }
+        logger.info(ChatColor.AQUA + "RedLightGreenLight - Shutdown complete!");
+        logger.info(ChatColor.AQUA + "RedLightGreenLight - Goodbye!");
+        logger.info("-------------------------------------------");
     }
 
     public static RedLightGreenLight getPlugin(){
