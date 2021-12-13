@@ -2,6 +2,7 @@ package me.loving11ish.redlightgreenlight;
 
 import me.loving11ish.redlightgreenlight.commands.CommandManager;
 import me.loving11ish.redlightgreenlight.events.*;
+import me.loving11ish.redlightgreenlight.updatesystem.JoinEvent;
 import me.loving11ish.redlightgreenlight.updatesystem.UpdateChecker;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import me.loving11ish.redlightgreenlight.utils.CountDownTasksUtils;
@@ -68,6 +69,7 @@ public final class RedLightGreenLight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuit(),this);
         getServer().getPluginManager().registerEvents(new PlayerKick(), this);
+        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
 
         //Plugin startup message
         logger.info("-------------------------------------------");
