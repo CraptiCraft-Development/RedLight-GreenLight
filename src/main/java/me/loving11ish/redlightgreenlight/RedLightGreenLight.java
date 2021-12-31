@@ -30,6 +30,8 @@ public final class RedLightGreenLight extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        //Plugin startup logic
+        plugin = this;
 
         //Server version compatibility check
         if (!(Bukkit.getServer().getVersion().contains("1.13")||Bukkit.getServer().getVersion().contains("1.14")||
@@ -45,7 +47,7 @@ public final class RedLightGreenLight extends JavaPlugin {
             logger.warning(ChatColor.RED + "RedLightGreenLight - 1.18.x");
             logger.warning(ChatColor.RED + "RedLightGreenLight - Is now disabling!");
             logger.warning(ChatColor.RED + "-------------------------------------------");
-            Bukkit.getPluginManager().disablePlugin(plugin);
+            Bukkit.getPluginManager().disablePlugin(this);
         }else {
             logger.info(ChatColor.GREEN + "-------------------------------------------");
             logger.info(ChatColor.GREEN + "RedLightGreenLight - A supported Minecraft version has been detected");
@@ -53,8 +55,7 @@ public final class RedLightGreenLight extends JavaPlugin {
             logger.info(ChatColor.GREEN + "-------------------------------------------");
         }
 
-        //Load the config file
-        plugin = this;
+        //Load the main config file
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 

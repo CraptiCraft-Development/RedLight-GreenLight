@@ -127,6 +127,9 @@ Run-lose-commands: true
 Lose-commands-list:
   - "effect give %player% minecraft:poison 10 0"
 
+#Do you want players to be struck with lightning whn they loose?
+Smite-losing-players: true
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                                   ----[RedLight-GreenLight]----                                   #

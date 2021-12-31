@@ -54,7 +54,9 @@ public class PlayerMove implements Listener {
                     player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-title")),
                             ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-subtitle")),
                             10, 30, 10);
-                    getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
+                    if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Smite-losing-players")){
+                        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
+                    }
                     if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")){
                         for (String string : losecommands) {
                             getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
