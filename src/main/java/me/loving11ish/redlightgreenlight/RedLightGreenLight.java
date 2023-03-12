@@ -50,6 +50,7 @@ public final class RedLightGreenLight extends JavaPlugin {
             logger.warning(ChatColor.RED + "RedLightGreenLight - Is now disabling!");
             logger.warning(ChatColor.RED + "-------------------------------------------");
             Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }else {
             logger.info(ChatColor.GREEN + "-------------------------------------------");
             logger.info(ChatColor.GREEN + "RedLightGreenLight - A supported Minecraft version has been detected");
@@ -78,7 +79,7 @@ public final class RedLightGreenLight extends JavaPlugin {
         logger.info("-------------------------------------------");
         logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin By Loving11ish");
         logger.info(ChatColor.AQUA + "RedLightGreenLight - has been loaded successfully");
-        logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin Version: " + ChatColor.GREEN + pluginVersion);
+        logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin Version: " + ChatColor.LIGHT_PURPLE + pluginVersion);
         logger.info("-------------------------------------------");
 
         //Check for available updates
@@ -111,10 +112,13 @@ public final class RedLightGreenLight extends JavaPlugin {
             if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
                 Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID4);
             }
+            logger.info("-------------------------------------------");
+            logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin By Loving11ish");
+            logger.info(ChatColor.AQUA + "RedLightGreenLight - Background tasks have disabled successfully");
         }catch (Exception e){
             logger.info("-------------------------------------------");
             logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin By Loving11ish");
-            logger.info(ChatColor.AQUA + "RedLightGreenLight - background tasks have disabled successfully");
+            logger.info(ChatColor.AQUA + "RedLightGreenLight - Background tasks have disabled successfully");
         }
 
         for (int i = 0; i < onlinePlayers.size(); i++){
