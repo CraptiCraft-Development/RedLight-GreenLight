@@ -6,6 +6,7 @@
 #                                   ----[Plugin Config File]----                                    #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#RedLightGreenLight config for version: ${project.version}
 
 #Do you want players inventories to be wiped on join?
 #This can bypassed using permission node 'redlight.bypass.joinwipe'
@@ -104,9 +105,9 @@ Bottom-trigger-block: GOLD_BLOCK
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Below sets how long of a delay there is before the RedLight movement detection checks for movement.#
-#This can be changed from '1 - 19'.  ANYTHING OVER 19 WILL CAUSE ERRORS!                            #
+#This can be changed from '50 - 950'.  ANYTHING OVER 950 WILL CAUSE ERRORS!                         #
 #                    DO NOT CHANGE THIS UNLESS YOU KNOW WHAT YOU'RE DOING!                          #
-RedLight-delay-checking-time: 12                                                                    #
+RedLight-delay-checking-time: 600                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 #Do you want to run any commands when a player wins?
@@ -174,7 +175,8 @@ Syntax-error-1: "&4Please provide an argument!"
 Syntax-error-2: "&4redlight reload"
 Syntax-error-3: "&4redlight help"
 
-Plugin-reload-successful: "&aThe config file has been reloaded!"
+Plugin-reload-beginning: "&aBeginning plugin reload..."
+Plugin-reload-successful: "&aPlugin reload complete!"
 Reload-command-no-permission: "&4You do not have the permission &eredlight.reload &4needed to run that command"
 Disabled-world-message: "&4&lRedLight&r&c-&a&lGreenLight has been disabled in this world."
 Joinall-command-no-permission: "&4You do not have the permission &eredlight.command.joinall &4needed to run that command"

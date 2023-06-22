@@ -39,16 +39,18 @@ public class ConsoleJoinAll extends ConsoleCommand {
             logger.warning(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-already-running")));
             return;
         }
-        for (int i = 0; i < onlinePlayers.size(); i++) {
-            String onPlayerName = onlinePlayers.get(i).getName();
+        for (Player onlinePlayer : onlinePlayers) {
+            String onPlayerName = onlinePlayer.getName();
             Player onlinePlayerName = Bukkit.getServer().getPlayer(onPlayerName);
-            UUID onlineUUID = onlinePlayerName.getUniqueId();
-            if (!(GameManager.getGame1().contains(onlineUUID))) {
-                GameManager.addToGame1(onlinePlayerName);
-                PlayerInventoryHandler.storeAndClearInventory(onlinePlayerName);
-                GameManager.startGameArena1(onlinePlayerName);
-            } else {
-                onlinePlayerName.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Failed-join-arena")));
+            if (onlinePlayerName != null){
+                UUID onlineUUID = onlinePlayerName.getUniqueId();
+                if (!(GameManager.getGame1().contains(onlineUUID))) {
+                    GameManager.addToGame1(onlinePlayerName);
+                    PlayerInventoryHandler.storeAndClearInventory(onlinePlayerName);
+                    GameManager.startGameArena1(onlinePlayerName);
+                } else {
+                    onlinePlayerName.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Failed-join-arena")));
+                }
             }
         }
     }

@@ -47,7 +47,7 @@ public class PlayerMove implements Listener {
                     if (!(GameManager.getCountDown().equals(0))){
                         return;
                     }
-                    if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
+                    if (!CountDownTasksUtils.wrappedTask4.isCancelled()){
                         return;
                     }
                     player.setGameMode(GameMode.SURVIVAL);

@@ -1,5 +1,7 @@
 package me.loving11ish.redlightgreenlight.utils;
 
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -12,15 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class CountDownTasksUtils {
 
-    public static Integer taskID1;
-    public static Integer taskID2;
-    public static Integer taskID3;
-    public static Integer taskID4;
+    private static FoliaLib foliaLib = RedLightGreenLight.getFoliaLib();
+
+    public static WrappedTask wrappedTask1;
+    public static WrappedTask wrappedTask2;
+    public static WrappedTask wrappedTask3;
+    public static WrappedTask wrappedTask4;
 
     private static List<String> losecommands = RedLightGreenLight.getPlugin().getConfig().getStringList("Lose-commands-list");
 
@@ -31,14 +36,13 @@ public class CountDownTasksUtils {
     final static float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-pitch");
 
     public static void runTaskStartArena1(){
-        taskID1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
+        wrappedTask1 = foliaLib.getImpl().runTimer(new Runnable() {
             Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Game-starting-countdown-length");
             @Override
             public void run() {
                 if (time == 1){
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
                         player.teleport(location);
@@ -48,37 +52,35 @@ public class CountDownTasksUtils {
                     CountDownTasksUtils.runTaskGoGame1();
                     GameManager.setGameRunning(1);
                     GameManager.setCountDown(1);
-                    Bukkit.getScheduler().cancelTask(taskID1);
+                    wrappedTask1.cancel();
                     return;
                 }
                 else {
                     time --;
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorUtils.translateColorCodes("&c&lGame Starting In: ") + ColorUtils.translateColorCodes("&c") + time));
                         player.playSound(player.getLocation(), Sound.BLOCK_END_PORTAL_FRAME_FILL, 2, 2);
                     }
                 }
             }
-        }, 0, 20);
+        }, 0L, 1L, TimeUnit.SECONDS);
     }
 
     public static void runTaskGoGame1(){
-        taskID2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
+        wrappedTask2 = foliaLib.getImpl().runTimer(new Runnable() {
             Integer time = 10;
             @Override
             public void run() {
                 if(time == 1){
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.setInvulnerable(RedLightGreenLight.getPlugin().getConfig().getBoolean("Join-player-invulnerable"));
                         player.setHealth(20.0);
                         player.setFoodLevel(20);
-                        if (!(player.hasPermission("redlight.bypass.gamemode")||player.hasPermission("redlight.*")||player.isOp())){
+                        if (!(player.hasPermission("redlight.bypass.gamemode") || player.hasPermission("redlight.*") || player.isOp())) {
                             player.setGameMode(GameMode.ADVENTURE);
                         }
                         player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-start-title")),
@@ -90,93 +92,85 @@ public class CountDownTasksUtils {
                         GameManager.addToRound(player);
                     }
                     game1Timer();
-                    Bukkit.getScheduler().cancelTask(taskID2);
+                    wrappedTask2.cancel();
                     return;
                 }
                 else {
                     time --;
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ColorUtils.translateColorCodes("&c&lRound Commencing in: ") + ColorUtils.translateColorCodes("&c") + time));
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 2, 2);
                     }
                 }
             }
-        },0,20);
+        }, 0L, 1L, TimeUnit.SECONDS);
     }
 
     public static void game1Timer() {
-        taskID3 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
+        wrappedTask3 = foliaLib.getImpl().runTimer(new Runnable() {
             Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Total-game-length");
             @Override
             public void run() {
                 if (time == 30) {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.sendTitle(ColorUtils.translateColorCodes("&c&l30 Seconds Remaining!"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
                     }
                 }
                 if (time == 10) {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.sendTitle(ColorUtils.translateColorCodes("&c&l10 Seconds Remaining!"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
                     }
                 }
                 if (time == 5) {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.sendTitle(ColorUtils.translateColorCodes("&c&l5 Seconds Remaining!"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
                     }
                 }
                 if (time == 4) {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.sendTitle(ColorUtils.translateColorCodes("&c&l4 Seconds Remaining!"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
                     }
                 }
                 if (time == 3) {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.sendTitle(ColorUtils.translateColorCodes("&c&l3 Seconds Remaining!"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
                     }
                 }
                 if (time == 2) {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++) {
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         player.sendTitle(ColorUtils.translateColorCodes("&c&l2 Seconds Remaining!"), ColorUtils.translateColorCodes(" "), 10, 30, 10);
                     }
                 }
                 if (time == 1) {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                    for (int i = 0; i < playersInGame.size(); i++){
-                        UUID uuid = playersInGame.get(i);
+                    for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         String target = player.getName();
                         getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
                         player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-title")),
                                 ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-subtitle")), 10, 30, 10);
-                        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")){
+                        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")) {
                             for (String string : losecommands) {
                                 getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
                             }
                         }
                     }
                     GameManager.endGameArena1();
-                    Bukkit.getScheduler().cancelTask(taskID3);
+                    wrappedTask3.cancel();
                     return;
                 }
                 else {
@@ -188,10 +182,9 @@ public class CountDownTasksUtils {
                             coolDownTimer();
                             GameManager.setLightgreen(1);
                             ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                            for (int i = 0; i < playersInGame.size(); i++) {
-                                UUID uuid = playersInGame.get(i);
+                            for (UUID uuid : playersInGame) {
                                 Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                                if (RedLightGreenLight.getPlugin().getConfig().getBoolean("RedLight-title-enable")){
+                                if (RedLightGreenLight.getPlugin().getConfig().getBoolean("RedLight-title-enable")) {
                                     player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("RedLight-message")),
                                             ColorUtils.translateColorCodes(" "), 10, 30, 10);
                                 }
@@ -201,8 +194,7 @@ public class CountDownTasksUtils {
                     }else {
                         GameManager.setLightgreen(0);
                         ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
-                        for (int i = 0; i < playersInGame.size(); i++) {
-                            UUID uuid = playersInGame.get(i);
+                        for (UUID uuid : playersInGame) {
                             Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                             player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("GreenLight-message")));
                         }
@@ -216,28 +208,30 @@ public class CountDownTasksUtils {
                         GameManager.setLightgreen(0);
                         GameManager.setGameRunning(0);
 
-                        Bukkit.getScheduler().cancelTask(taskID3);
+                        wrappedTask3.cancel();
                         return;
                     }
                     return;
                 }
             }
-        }, 0, 20);
+        }, 0L, 1L, TimeUnit.SECONDS);
     }
 
+    private static long repeatTime = RedLightGreenLight.getPlugin().getConfig().getInt("RedLight-delay-checking-time");
+
     public static void coolDownTimer(){
-        taskID4 = Bukkit.getScheduler().scheduleSyncRepeatingTask(RedLightGreenLight.getPlugin(RedLightGreenLight.class), new Runnable() {
+        wrappedTask4 = foliaLib.getImpl().runTimer(new Runnable() {
             Integer time = 2;
             @Override
             public void run() {
                 if (time == 1){
-                    Bukkit.getScheduler().cancelTask(taskID4);
+                    wrappedTask4.cancel();
                     return;
                 }
                 else {
                     time --;
                 }
             }
-        }, 0, RedLightGreenLight.getPlugin().getConfig().getInt("RedLight-delay-checking-time"));
+        }, 0L, repeatTime, TimeUnit.MILLISECONDS);
     }
 }

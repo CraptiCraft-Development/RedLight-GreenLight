@@ -20,6 +20,7 @@ public class PlayerQuit implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         if (GameManager.getGame1().contains(uuid)){
+            player.setInvulnerable(false);
             GameManager.leaveGame1(player);
             if (PlayerInventoryHandler.getItems().contains(uuid) && PlayerInventoryHandler.getArmor().contains(uuid)){
                 PlayerInventoryHandler.clearInventory(player);

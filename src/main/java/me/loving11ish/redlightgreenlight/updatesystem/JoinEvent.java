@@ -19,7 +19,7 @@ public class JoinEvent implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.hasPermission("playergui.update")) {
-            new UpdateChecker(plugin, 96866).getVersion(version -> {
+            new UpdateChecker(96866).getVersion(version -> {
                 try {
                     if (!(plugin.getDescription().getVersion().equalsIgnoreCase(version))) {
                         player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Update-1")));

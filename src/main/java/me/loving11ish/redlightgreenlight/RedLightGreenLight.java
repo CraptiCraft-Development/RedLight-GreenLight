@@ -1,5 +1,8 @@
 package me.loving11ish.redlightgreenlight;
 
+import com.rylinaux.plugman.api.PlugManAPI;
+import com.tcoded.folialib.FoliaLib;
+import io.papermc.lib.PaperLib;
 import me.loving11ish.redlightgreenlight.commands.CommandManager;
 import me.loving11ish.redlightgreenlight.events.*;
 import me.loving11ish.redlightgreenlight.updatesystem.JoinEvent;
@@ -9,8 +12,8 @@ import me.loving11ish.redlightgreenlight.utils.CountDownTasksUtils;
 import me.loving11ish.redlightgreenlight.utils.GameManager;
 import me.loving11ish.redlightgreenlight.utils.PlayerInventoryHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +27,7 @@ public final class RedLightGreenLight extends JavaPlugin {
     private PluginDescriptionFile pluginInfo = getDescription();
     private String pluginVersion = pluginInfo.getVersion();
     private static RedLightGreenLight plugin;
+    private static FoliaLib foliaLib;
     Logger logger = this.getLogger();
 
     public List<Player> onlinePlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
@@ -32,30 +36,73 @@ public final class RedLightGreenLight extends JavaPlugin {
     public void onEnable() {
         //Plugin startup logic
         plugin = this;
+        foliaLib = new FoliaLib(plugin);
 
         //Server version compatibility check
         if (!(Bukkit.getServer().getVersion().contains("1.13")||Bukkit.getServer().getVersion().contains("1.14")||
                 Bukkit.getServer().getVersion().contains("1.15")||Bukkit.getServer().getVersion().contains("1.16")||
                 Bukkit.getServer().getVersion().contains("1.17")||Bukkit.getServer().getVersion().contains("1.18")||
-                Bukkit.getServer().getVersion().contains("1.19"))){
-            logger.warning(ChatColor.RED + "-------------------------------------------");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - This plugin is only supported on the Minecraft versions listed below:");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - 1.13.x");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - 1.14.x");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - 1.15.x");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - 1.16.x");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - 1.17.x");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - 1.18.x");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - 1.19.x");
-            logger.warning(ChatColor.RED + "RedLightGreenLight - Is now disabling!");
-            logger.warning(ChatColor.RED + "-------------------------------------------");
+                Bukkit.getServer().getVersion().contains("1.19")||Bukkit.getServer().getVersion().contains("1.20"))){
+            logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4Your server version is: &d" + Bukkit.getServer().getVersion()));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4This plugin is only supported on the Minecraft versions listed below:"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &41.13.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &41.14.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &41.15.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &41.16.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &41.17.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &41.18.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &41.19.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &41.20.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4Is now disabling!"));
+            logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }else {
-            logger.info(ChatColor.GREEN + "-------------------------------------------");
-            logger.info(ChatColor.GREEN + "RedLightGreenLight - A supported Minecraft version has been detected");
-            logger.info(ChatColor.GREEN + "RedLightGreenLight - Continuing plugin startup");
-            logger.info(ChatColor.GREEN + "-------------------------------------------");
+            logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &aA supported Minecraft version has been detected"));
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &aYour server version is: &d" + Bukkit.getServer().getVersion()));
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &6Continuing plugin startup"));
+            logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
+        }
+
+        //Suggest PaperMC if not using
+        if (foliaLib.isUnsupported()||foliaLib.isSpigot()){
+            PaperLib.suggestPaper(this);
+        }
+
+        //Check if PlugManX is enabled
+        if (isPlugManXEnabled()){
+            if (!PlugManAPI.iDoNotWantToBeUnOrReloaded("RedLightGreenLight")){
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&4WARNING WARNING WARNING WARNING!"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4You appear to be using an unsupported version of &d&lPlugManX"));
+                logger.severe(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4Please &4&lDO NOT USE PLUGMANX TO LOAD/UNLOAD/RELOAD THIS PLUGIN!"));
+                logger.severe(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4Please &4&lFULLY RESTART YOUR SERVER!"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4This plugin &4&lHAS NOT &4been validated to use this version of PlugManX!"));
+                logger.severe(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4&lNo official support will be given to you if you use this!"));
+                logger.severe(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4&lUnless Loving11ish has explicitly agreed to help!"));
+                logger.severe(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4Please add RedLightGreenLight to the ignored-plugins list in PlugManX's config.yml"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&6RedLightGreenLight: &6Continuing plugin startup"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+            }else {
+                logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
+                logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &aSuccessfully hooked into PlugManX"));
+                logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &aSuccessfully added RedLightGreenLight to ignoredPlugins list."));
+                logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &6Continuing plugin startup"));
+                logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
+            }
+        }else {
+            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &cPlugManX not found!"));
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &cDisabling PlugManX hook loader"));
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &6Continuing plugin startup"));
+            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
         }
 
         //Load the main config file
@@ -76,14 +123,14 @@ public final class RedLightGreenLight extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
 
         //Plugin startup message
-        logger.info("-------------------------------------------");
-        logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin By Loving11ish");
-        logger.info(ChatColor.AQUA + "RedLightGreenLight - has been loaded successfully");
-        logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin Version: " + ChatColor.LIGHT_PURPLE + pluginVersion);
-        logger.info("-------------------------------------------");
+        logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+        logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3Plugin by: &b&lLoving11ish"));
+        logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3has been loaded successfully"));
+        logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3Plugin Version: &d&l" + pluginVersion));
+        logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
 
         //Check for available updates
-        new UpdateChecker(this, 96866).getVersion(version -> {
+        new UpdateChecker(96866).getVersion(version -> {
             if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
                 logger.info(ColorUtils.translateColorCodes(getConfig().getString("No-update-1")));
                 logger.info(ColorUtils.translateColorCodes(getConfig().getString("No-update-2")));
@@ -98,53 +145,87 @@ public final class RedLightGreenLight extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        //Plugin shutdown logic
+
+        //Unregister plugin listeners
+        HandlerList.unregisterAll(this);
+
+        //Cancel background tasks
+        logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+        logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3Plugin by: &b&lLoving11ish"));
         try {
-            if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID1) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID1)){
-                Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID1);
+            if (!CountDownTasksUtils.wrappedTask1.isCancelled()){
+                CountDownTasksUtils.wrappedTask1.cancel();
             }
-            if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID2) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID2)){
-                Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID2);
+            if (!CountDownTasksUtils.wrappedTask2.isCancelled()){
+                CountDownTasksUtils.wrappedTask2.cancel();
             }
-            if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID3) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID3)){
-                Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID3);
+            if (!CountDownTasksUtils.wrappedTask3.isCancelled()){
+                CountDownTasksUtils.wrappedTask3.cancel();
             }
-            if (Bukkit.getScheduler().isCurrentlyRunning(CountDownTasksUtils.taskID4) || Bukkit.getScheduler().isQueued(CountDownTasksUtils.taskID4)){
-                Bukkit.getScheduler().cancelTask(CountDownTasksUtils.taskID4);
+            if (!CountDownTasksUtils.wrappedTask4.isCancelled()){
+                CountDownTasksUtils.wrappedTask4.cancel();
             }
-            logger.info("-------------------------------------------");
-            logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin By Loving11ish");
-            logger.info(ChatColor.AQUA + "RedLightGreenLight - Background tasks have disabled successfully");
+            if (foliaLib.isUnsupported()){
+                Bukkit.getScheduler().cancelTasks(this);
+            }
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3Background tasks have disabled successfully!"));
         }catch (Exception e){
-            logger.info("-------------------------------------------");
-            logger.info(ChatColor.AQUA + "RedLightGreenLight - Plugin By Loving11ish");
-            logger.info(ChatColor.AQUA + "RedLightGreenLight - Background tasks have disabled successfully");
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3Background tasks have disabled successfully!"));
         }
 
-        for (int i = 0; i < onlinePlayers.size(); i++){
-            String onPlayerName = onlinePlayers.get(i).getName();
+        //Restore players invs & leave active game
+        for (Player onlinePlayer : onlinePlayers) {
+            String onPlayerName = onlinePlayer.getName();
             Player onlinePlayerName = Bukkit.getServer().getPlayer(onPlayerName);
-            UUID onlineUUID = onlinePlayerName.getUniqueId();
-            if (GameManager.getGame1().contains(onlineUUID)){
-                if (PlayerInventoryHandler.getItems().contains(onlineUUID) && PlayerInventoryHandler.getArmor().contains(onlineUUID)){
-                    PlayerInventoryHandler.clearInventory(onlinePlayerName);
-                    PlayerInventoryHandler.restoreInventory(onlinePlayerName);
-                }
-                if (GameManager.getPlayersInRound().contains(onlineUUID)){
-                    GameManager.leaveRound(onlinePlayerName);
-                }
-                GameManager.leaveGame1(onlinePlayerName);
-                if (GameManager.getSpectatingPlayers().contains(onlineUUID)){
-                    GameManager.leaveSpectating(onlinePlayerName);
+            if (onlinePlayerName != null){
+                UUID onlineUUID = onlinePlayerName.getUniqueId();
+                if (GameManager.getGame1().contains(onlineUUID)) {
+                    onlinePlayerName.setInvulnerable(false);
+                    if (PlayerInventoryHandler.getItems().contains(onlineUUID) && PlayerInventoryHandler.getArmor().contains(onlineUUID)) {
+                        PlayerInventoryHandler.clearInventory(onlinePlayerName);
+                        PlayerInventoryHandler.restoreInventory(onlinePlayerName);
+                    }
+                    if (GameManager.getPlayersInRound().contains(onlineUUID)) {
+                        GameManager.leaveRound(onlinePlayerName);
+                    }
+                    GameManager.leaveGame1(onlinePlayerName);
+                    if (GameManager.getSpectatingPlayers().contains(onlineUUID)) {
+                        GameManager.leaveSpectating(onlinePlayerName);
+                    }
                 }
             }
         }
-        logger.info(ChatColor.AQUA + "RedLightGreenLight - Shutdown complete!");
-        logger.info(ChatColor.AQUA + "RedLightGreenLight - Goodbye!");
-        logger.info("-------------------------------------------");
+
+        //Final plugin shutdown message
+        logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3Plugin Version: &d&l" + pluginVersion));
+        logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3Has been shutdown successfully"));
+        logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &3Goodbye!"));
+        logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+
+        //Cleanup any plugin remains
+        foliaLib = null;
+        plugin = null;
+    }
+
+    public boolean isPlugManXEnabled() {
+        try {
+            Class.forName("com.rylinaux.plugman.PlugMan");
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &aFound PlugManX main class at:"));
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &dcom.rylinaux.plugman.PlugMan"));
+            return true;
+        }catch (ClassNotFoundException e){
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &aCould not find PlugManX main class at:"));
+            logger.info(ColorUtils.translateColorCodes("&6RedLightGreenLight: &dcom.rylinaux.plugman.PlugMan"));
+            return false;
+        }
     }
 
     public static RedLightGreenLight getPlugin(){
         return plugin;
+    }
+
+    public static FoliaLib getFoliaLib() {
+        return foliaLib;
     }
 }

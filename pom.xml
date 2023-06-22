@@ -6,14 +6,14 @@
 
     <groupId>me.loving11ish</groupId>
     <artifactId>RedLightGreenLight</artifactId>
-    <version>2.5.3</version>
+    <version>2.5.4-BETA-01</version>
     <packaging>jar</packaging>
 
     <name>RedLightGreenLight</name>
 
     <description>A Red Light, Green Light mini-game based off the Netflix series Squid Games.</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -32,17 +32,26 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.4.1</version> <!-- Make sure to always use the latest version (https://maven.apache.org/plugins/maven-shade-plugin/) -->
+                <configuration>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <relocations>
+                        <relocation>
+                            <pattern>io.papermc.lib</pattern>
+                            <shadedPattern>me.loving11ish.redlightgreenlight.paperlib</shadedPattern> <!-- Replace this -->
+                        </relocation>
+                        <relocation>
+                            <pattern>com.tcoded.folialib</pattern>
+                            <shadedPattern>me.loving11ish.redlightgreenlight.folialib</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>/Users/mark/IdeaProjects/${project.artifactId}-${project.version}.jar</outputFile>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -64,13 +73,44 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>devmart-other</id>
+            <url>https://nexuslite.gcnt.net/repos/other/</url>
+        </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+        <!-- PlugMan -->
+        <repository>
+            <id>PlugMan</id>
+            <url>https://raw.githubusercontent.com/TheBlackEntity/PlugMan/repository/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tcoded</groupId>
+            <artifactId>FoliaLib</artifactId>
+            <version>0.2.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.rylinaux</groupId>
+            <artifactId>PlugMan</artifactId>
+            <version>2.2.9</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

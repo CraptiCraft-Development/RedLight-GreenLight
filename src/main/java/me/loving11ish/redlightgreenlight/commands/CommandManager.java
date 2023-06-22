@@ -9,6 +9,7 @@ import me.loving11ish.redlightgreenlight.commands.subcommands.*;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
@@ -38,8 +39,7 @@ public class CommandManager implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             if (args.length > 0) {
                 for (int i = 0; i < getSubCommands().size(); i++) {
                     if (args[0].equalsIgnoreCase(getSubCommands().get(i).getName())) {
@@ -47,7 +47,7 @@ public class CommandManager implements TabExecutor {
                     }
                 }
             }
-        } else if (!(sender instanceof Player)) {
+        } else if (sender instanceof ConsoleCommandSender) {
             if (args.length > 0) {
                 for (int i = 0; i < getConsoleCommands().size(); i++) {
                     if (args[0].equalsIgnoreCase(getConsoleCommands().get(i).getName())) {
