@@ -2,6 +2,7 @@ package me.loving11ish.redlightgreenlight.utils;
 
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import io.papermc.lib.PaperLib;
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -36,7 +37,7 @@ public class CountDownTasksUtils {
     final static float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-pitch");
 
     public static void runTaskStartArena1(){
-        wrappedTask1 = foliaLib.getImpl().runTimer(new Runnable() {
+        wrappedTask1 = foliaLib.getImpl().runTimerAsync(new Runnable() {
             Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Game-starting-countdown-length");
             @Override
             public void run() {
@@ -45,9 +46,10 @@ public class CountDownTasksUtils {
                     for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
-                        player.teleport(location);
+                        PaperLib.teleportAsync(player, location);
                         player.setWalkSpeed(0.0f);
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 10, 100000, false, false, false));
+                        foliaLib.getImpl().runAtEntityLater(player, () ->
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 10, 100000, false, false, false)), 50L, TimeUnit.MILLISECONDS);
                     }
                     CountDownTasksUtils.runTaskGoGame1();
                     GameManager.setGameRunning(1);
@@ -65,11 +67,11 @@ public class CountDownTasksUtils {
                     }
                 }
             }
-        }, 0L, 1L, TimeUnit.SECONDS);
+        }, 1L, 1L, TimeUnit.SECONDS);
     }
 
     public static void runTaskGoGame1(){
-        wrappedTask2 = foliaLib.getImpl().runTimer(new Runnable() {
+        wrappedTask2 = foliaLib.getImpl().runTimerAsync(new Runnable() {
             Integer time = 10;
             @Override
             public void run() {
@@ -87,7 +89,8 @@ public class CountDownTasksUtils {
                                 ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-start-subtitle")), 20, 80, 20);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 2, 2);
                         player.setWalkSpeed(0.2f);
-                        player.removePotionEffect(PotionEffectType.JUMP);
+                        foliaLib.getImpl().runAtEntityLater(player, () ->
+                                player.removePotionEffect(PotionEffectType.JUMP), 50L, TimeUnit.MILLISECONDS);
                         GameManager.setCountDown(0);
                         GameManager.addToRound(player);
                     }
@@ -109,7 +112,7 @@ public class CountDownTasksUtils {
     }
 
     public static void game1Timer() {
-        wrappedTask3 = foliaLib.getImpl().runTimer(new Runnable() {
+        wrappedTask3 = foliaLib.getImpl().runTimerAsync(new Runnable() {
             Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Total-game-length");
             @Override
             public void run() {
@@ -160,12 +163,14 @@ public class CountDownTasksUtils {
                     for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         String target = player.getName();
-                        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
+                        foliaLib.getImpl().runNextTick((task) ->
+                                getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~"));
                         player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-title")),
                                 ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-subtitle")), 10, 30, 10);
                         if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")) {
                             for (String string : losecommands) {
-                                getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
+                                foliaLib.getImpl().runNextTick((task) ->
+                                        getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target)));
                             }
                         }
                     }
@@ -214,13 +219,13 @@ public class CountDownTasksUtils {
                     return;
                 }
             }
-        }, 0L, 1L, TimeUnit.SECONDS);
+        }, 1L, 1L, TimeUnit.SECONDS);
     }
 
     private static long repeatTime = RedLightGreenLight.getPlugin().getConfig().getInt("RedLight-delay-checking-time");
 
     public static void coolDownTimer(){
-        wrappedTask4 = foliaLib.getImpl().runTimer(new Runnable() {
+        wrappedTask4 = foliaLib.getImpl().runTimerAsync(new Runnable() {
             Integer time = 2;
             @Override
             public void run() {
@@ -232,6 +237,6 @@ public class CountDownTasksUtils {
                     time --;
                 }
             }
-        }, 0L, repeatTime, TimeUnit.MILLISECONDS);
+        }, 1L, repeatTime, TimeUnit.MILLISECONDS);
     }
 }

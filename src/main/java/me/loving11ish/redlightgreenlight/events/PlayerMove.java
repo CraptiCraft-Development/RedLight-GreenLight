@@ -1,5 +1,6 @@
 package me.loving11ish.redlightgreenlight.events;
 
+import com.tcoded.folialib.FoliaLib;
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import me.loving11ish.redlightgreenlight.utils.CountDownTasksUtils;
@@ -20,6 +21,8 @@ import java.util.UUID;
 import static org.bukkit.Bukkit.getServer;
 
 public class PlayerMove implements Listener {
+
+    FoliaLib foliaLib = RedLightGreenLight.getFoliaLib();
 
     List<String> wincommands = RedLightGreenLight.getPlugin().getConfig().getStringList("Win-commands-list");
     List<String> losecommands = RedLightGreenLight.getPlugin().getConfig().getStringList("Lose-commands-list");
@@ -55,11 +58,13 @@ public class PlayerMove implements Listener {
                             ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-subtitle")),
                             10, 30, 10);
                     if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Smite-losing-players")){
-                        getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~");
+                        foliaLib.getImpl().runNextTick((task) ->
+                            getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~"));
                     }
                     if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")){
                         for (String string : losecommands) {
-                            getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
+                            foliaLib.getImpl().runNextTick((task) ->
+                                    getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target)));
                         }
                     }
                     if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Losers-spectate-game")){
@@ -93,10 +98,12 @@ public class PlayerMove implements Listener {
                     player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-win-title")),
                             ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-win-subtitle")),
                             10, 30, 10);
-                    getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:firework_rocket ~ ~ ~");
+                    foliaLib.getImpl().runNextTick((task) ->
+                            getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:firework_rocket ~ ~ ~"));
                     if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-win-commands")){
                         for (String string : wincommands) {
-                            getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target));
+                            foliaLib.getImpl().runNextTick((task) ->
+                                    getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target)));
                         }
                     }
                     GameManager.teleportToLobby(player);

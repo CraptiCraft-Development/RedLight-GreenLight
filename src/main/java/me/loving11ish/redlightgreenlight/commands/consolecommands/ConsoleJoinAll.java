@@ -6,16 +6,16 @@ import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import me.loving11ish.redlightgreenlight.utils.GameManager;
 import me.loving11ish.redlightgreenlight.utils.PlayerInventoryHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class ConsoleJoinAll extends ConsoleCommand {
 
-    Logger logger = RedLightGreenLight.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     @Override
     public String getName() {
@@ -36,7 +36,7 @@ public class ConsoleJoinAll extends ConsoleCommand {
     public void perform(String[] args) {
         List<Player> onlinePlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
         if (!(GameManager.getGameRunning() == 0)) {
-            logger.warning(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-already-running")));
+            console.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-already-running")));
             return;
         }
         for (Player onlinePlayer : onlinePlayers) {

@@ -1,5 +1,6 @@
 package me.loving11ish.redlightgreenlight.utils;
 
+import io.papermc.lib.PaperLib;
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -90,7 +91,7 @@ public class GameManager {
         float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-yaw");
         float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-pitch");
         Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
-        player.teleport(location);
+        PaperLib.teleportAsync(player, location);
         player.setInvulnerable(RedLightGreenLight.getPlugin().getConfig().getBoolean("Leave-player-invulnerable"));
         if (!(player.hasPermission("redlight.bypass.gamemode")||player.hasPermission("redlight.*")||player.isOp())){
             player.setGameMode(GameMode.SURVIVAL);
@@ -104,7 +105,7 @@ public class GameManager {
         float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-spectate-yaw");
         float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-spectate-pitch");
         Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
-        player.teleport(location);
+        PaperLib.teleportAsync(player, location);
         player.setGameMode(GameMode.SPECTATOR);
         GameManager.addToSpectating(player);
     }
@@ -129,7 +130,7 @@ public class GameManager {
             float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-yaw");
             float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-pitch");
             Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
-            player.teleport(location);
+            PaperLib.teleportAsync(player, location);
             if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Show-leave-game-title")){
                 player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-leave-title")),
                         ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-leave-subtitle")), 20, 80, 20);
@@ -156,7 +157,7 @@ public class GameManager {
             float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-yaw");
             float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-pitch");
             Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
-            player.teleport(location);
+            PaperLib.teleportAsync(player, location);
             if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Show-leave-game-title")){
                 player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-leave-title")),
                         ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-leave-subtitle")), 20, 80, 20);

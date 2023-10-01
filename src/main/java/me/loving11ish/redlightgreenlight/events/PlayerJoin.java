@@ -1,5 +1,6 @@
 package me.loving11ish.redlightgreenlight.events;
 
+import io.papermc.lib.PaperLib;
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import me.loving11ish.redlightgreenlight.utils.GameManager;
@@ -45,7 +46,7 @@ public class PlayerJoin implements Listener {
             float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-yaw");
             float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-pitch");
             Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
-            player.teleport(location);
+            PaperLib.teleportAsync(player, location);
         }
     }
 }

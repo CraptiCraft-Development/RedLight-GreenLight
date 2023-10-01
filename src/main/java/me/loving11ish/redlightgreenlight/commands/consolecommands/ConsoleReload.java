@@ -6,13 +6,13 @@ import me.loving11ish.redlightgreenlight.commands.ConsoleCommand;
 import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 public class ConsoleReload extends ConsoleCommand {
 
-    Logger logger = RedLightGreenLight.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     @Override
     public String getName() {
@@ -31,7 +31,7 @@ public class ConsoleReload extends ConsoleCommand {
 
     @Override
     public void perform(String[] args) {
-        logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Plugin-reload-beginning")));
+        console.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Plugin-reload-beginning")));
         FoliaLib foliaLib = RedLightGreenLight.getFoliaLib();
         RedLightGreenLight.getPlugin().onDisable();
         foliaLib.getImpl().runLater(() -> {
@@ -39,7 +39,7 @@ public class ConsoleReload extends ConsoleCommand {
         }, 5L, TimeUnit.SECONDS);
         foliaLib.getImpl().runLater(() -> {
             RedLightGreenLight.getPlugin().reloadConfig();
-            logger.info(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Plugin-reload-successful")));
+            console.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Plugin-reload-successful")));
         }, 5L, TimeUnit.SECONDS);
     }
 }
