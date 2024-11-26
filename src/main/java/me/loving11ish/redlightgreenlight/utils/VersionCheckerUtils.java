@@ -1,34 +1,47 @@
 package me.loving11ish.redlightgreenlight.utils;
 
+import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.regex.PatternSyntaxException;
 
 public class VersionCheckerUtils {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
-
-    private final String serverPackage = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+    private String serverPackage;
     private int version;
+    private boolean versionCheckedSuccessfully = false;
+
+    public VersionCheckerUtils() {
+        try {
+            serverPackage = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            serverPackage = null;
+        }
+    }
 
     public void setVersion() {
         try {
-            version = Integer.parseInt(serverPackage.split("_")[1]);
-        }catch (NumberFormatException | PatternSyntaxException e){
-            console.sendMessage(ColorUtils.translateColorCodes("&c-------------------------------------------"));
-            console.sendMessage(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4Unable to process server version!"));
-            console.sendMessage(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4Some features may break unexpectedly!"));
-            console.sendMessage(ColorUtils.translateColorCodes("&6RedLightGreenLight: &4Report any issues to the developer!"));
-            console.sendMessage(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+            version = RedLightGreenLight.getPlugin().getServerVersion().getServerMajorVersionNumber();
+            versionCheckedSuccessfully = true;
+        } catch (NumberFormatException | PatternSyntaxException e) {
+            versionCheckedSuccessfully = false;
+            MessageUtils.sendConsole("&c-------------------------------------------");
+            MessageUtils.sendConsole("&4Unable to process server version!");
+            MessageUtils.sendConsole("&4Some features may break unexpectedly!");
+            MessageUtils.sendConsole("&4Report any issues to the developer!");
+            MessageUtils.sendConsole("&c-------------------------------------------");
         }
     }
 
     public String getServerPackage() {
-        return serverPackage;
+        return serverPackage != null ? serverPackage : "Unknown";
     }
 
     public int getVersion() {
         return version;
+    }
+
+    public boolean isVersionCheckedSuccessfully() {
+        return versionCheckedSuccessfully;
     }
 }

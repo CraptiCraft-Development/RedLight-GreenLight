@@ -8,49 +8,57 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #RedLightGreenLight config for version: ${project.version}
 
+#General settings
+developer-debug-mode:
+  #Do you want to see a lot of debug messages in console when most actions are performed?
+  #OPTIONS: 'true'/'false', PLACEHOLDERS: none, DEFAULT:'false'
+  enabled: false
+
 #Do you want players inventories to be wiped on join?
 #This can bypassed using permission node 'redlight.bypass.joinwipe'
-Wipe-inventory-on-join: false
+wipe-inventory-on-join: false
 
 #Do you want RedLight-GreenLight to handle server join spawn location (World/Server join lobby)?
-Handle-player-join-spawn-event: true
+handle-player-join-spawn-event: true
 
 #Do you want to send a welcome title for players joining the server?
-Send-welcome-title: true
+send-welcome-title: true
 #Welcome-player-to-server-title:
-Welcome-player-title: "&a&lWelcome To RedLight-GreenLight!"
-Welcome-player-subtitle: "&ePlease use /redlight join"
+welcome-player-title: "&a&lWelcome To RedLight-GreenLight!"
+welcome-player-subtitle: "&ePlease use /redlight join"
 
 #Do you want to disable the plugin use in certain worlds?
 #To not use this, comment out the world's listed below and add '[]' after 'Disabled-worlds:'
-Disabled-worlds:
+disabled-worlds:
   - "world_nether"
   - "world_the_end"
 
 #Do you want the player to be made invulnerable on join?
-Join-player-invulnerable: true
+join-player-invulnerable: true
 
 #Do you want the player to be made invulnerable on game leave?
-Leave-player-invulnerable: true
+leave-player-invulnerable: true
 
 #Do you want to disable ALL hunger loss?
-Disable-global-hunger-drain: false
+disable-global-hunger-drain: false
 
 #Do you want to disable hunger loss ONLY for players in a RedLight-GreenLight game?
-Disable-in-game-hunger-drain: true
+disable-in-game-hunger-drain: true
 
 #World/server join lobby position
 #Join-lobby-position:
-lobby-x: -233.0
-lobby-y: 52.2
-lobby-z: 24.0
-lobby-yaw: 0.0
-lobby-pitch: -0.0
+lobby-position:
+  world-name: "world"
+  x: -233.0
+  y: 52.2
+  z: 24.0
+  yaw: 0.0
+  pitch: -0.0
 
 #List below commands that are blocked during gameplay.
 #This can bypassed using permission node 'redlight.bypass.commands'
 #Any changes made to this list require a server restart or reload to take effect!
-Blocked-commands-in-game:
+blocked-commands-in-game:
   - "/spawn"
   - "/home"
   - "/sethome"
@@ -70,150 +78,65 @@ Blocked-commands-in-game:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 #How many players should be in the arena for the game to start?
-Arena-start-size: 4
+arena-start-size: 4
 
 #How long do you want the game starting countdown to be? (In seconds.)
-Game-starting-countdown-length: 10
+game-starting-countdown-length: 10
 
 #How long do you want the total length of the game? (In seconds. 300 = 5 mins)
-Total-game-length: 300
+total-game-length: 300
 
 #Set the arena starting position for the players
 #Arena-position:
-Arena-Start-x: -220.5
-Arena-Start-y: 50.0
-Arena-Start-z: 161.5
-Arena-Start-yaw: 0.0
-Arena-Start-pitch: -6.0
+arena-start:
+  world-name: "world"
+  x: -220.5
+  y: 50.0
+  z: 161.5
+  yaw: 0.0
+  pitch: -6.0
 
 #Do you want the losers to spectate the game in progress?
-Losers-spectate-game: true
+losers-spectate-game: true
 #Set the location of the spectator spawn.
 #Spectator-position:
-Arena-spectate-x: -220.5
-Arena-spectate-y: 50.0
-Arena-spectate-z: 161.5
-Arena-spectate-yaw: 0.0
-Arena-spectate-pitch: -6.0
+arena-spectate:
+  world-name: "world"
+  x: -220.5
+  y: 50.0
+  z: 161.5
+  yaw: 0.0
+  pitch: -6.0
 
 #The following section sets the detection of the WINNING ZONE.
 #Simply make the floor of the WINNING ZONE out of the below block combination.
 #EXAMPLE: Block under player -          COAL_BLOCK
 #EXAMPLE: Block under (-Y) COAL_BLOCK - GOLD_BLOCK
-Top-trigger-block: COAL_BLOCK
-Bottom-trigger-block: GOLD_BLOCK
+top-trigger-block: COAL_BLOCK
+bottom-trigger-block: GOLD_BLOCK
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Below sets how long of a delay there is before the RedLight movement detection checks for movement.#
 #This can be changed from '50 - 950'.  ANYTHING OVER 950 WILL CAUSE ERRORS!                         #
 #                    DO NOT CHANGE THIS UNLESS YOU KNOW WHAT YOU'RE DOING!                          #
-RedLight-delay-checking-time: 600                                                                   #
+redLight-delay-checking-time: 600                                                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 #Do you want to run any commands when a player wins?
-Run-win-commands: true
+run-win-commands: true
 #Enter the list of commands to be run below. (All commands are executed by the console)
 #Any changes made to this list require a server restart or reload to take effect!
-Win-commands-list:
+win-commands-list:
   - "xp add %player% 10 levels"
   - "effect give %player% minecraft:speed 10 1"
 
 #Do you want to run any commands when a player loses?
-Run-lose-commands: true
+run-lose-commands: true
 #Enter the list of commands to be run below. (All commands are executed by the console)
 #Any changes made to this list require a server restart or reload to take effect!
-Lose-commands-list:
+lose-commands-list:
   - "effect give %player% minecraft:poison 10 0"
 
 #Do you want players to be struck with lightning whn they loose?
-Smite-losing-players: true
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#                                   ----[RedLight-GreenLight]----                                   #
-#                                     ----[By Loving11ish]----                                      #
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#                                  ----[Plugin Messages File]----                                   #
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-
-#Game messages
-Joined-game: "&aYou have joined the game.\n&aNow prepare to move only when told!"
-Command-send-error: "&cSorry, that command cannot be run during gameplay!"
-Failed-join-arena: "&cYou are already part of a game.\n&cUse &e/redlight leave &cto return to main lobby."
-Successful-leave-game: "&aYou left the game and were teleported back to the lobby!"
-Player-not-in-game: "&cYou are not currently in a &4&lRedLight&r&c-&a&lGreenLight &r&cgame!"
-Waiting-for-enough-players: "&eYou are now in the queue to play.&r\n&eNow waiting for enough players to begin the game.&r\n&eUse &b/redlight leave &eto leave the game."
-Game-already-running: "&cSorry there is already a &4&lRedLight&r&c-&a&lGreenLight &r&cgame running!"
-No-game-running: "&cSorry there is not currently a &4&lRedLight&r&c-&a&lGreenLight &r&cgame running!"
-Spectating-message: "&aYou are now spectating the arena! \n&aUse &b/redlight leave &a to return to spawn."
-
-Round-end-title: "&eNo One Won The Game!"
-Round-end-subtitle: "&a&lGG's All Round"
-
-GreenLight-message: "&aGreen Light"
-#Do you want the RedLight message to be sent as a title & in chat?
-RedLight-title-enable: true
-RedLight-message: "&cRed Light"
-
-Game-start-title: "&a&lLet The Race Begin!"
-Game-start-subtitle: "&bBeat everyone to the finish line!"
-
-Game-win-title: "&6&lCongratulations!  You Made it!"
-Game-win-subtitle: "&bLets wait and see who will join you"
-
-Game-loose-title: "&c&lOOF You didn't stand still!"
-Game-loose-subtitle: "&4Better luck next time!"
-
-#Do you want the players to be shown a title when they leave the game?
-Show-leave-game-title: false
-Game-leave-title: "&a&lYou Left The Game!"
-Game-leave-subtitle: "&eThank you for playing!"
-
-#Incorrect-command-syntax-console:
-Syntax-error-1: "&4Please provide an argument!"
-Syntax-error-2: "&4redlight reload"
-Syntax-error-3: "&4redlight help"
-
-Plugin-reload-beginning: "&aBeginning plugin reload..."
-Plugin-reload-successful: "&aPlugin reload complete!"
-Reload-command-no-permission: "&4You do not have the permission &eredlight.reload &4needed to run that command"
-Disabled-world-message: "&4&lRedLight&r&c-&a&lGreenLight has been disabled in this world."
-Joinall-command-no-permission: "&4You do not have the permission &eredlight.command.joinall &4needed to run that command"
-Leaveall-command-no-permission: "&4You do not have the permission &eredlight.command.leaveall &4needed to run that command"
-
-#Plugin-update-available:
-Update-1: "&4*-------------------------------------------*"
-Update-2: "&bRedLight-GreenLight &c- A new version is available!"
-Update-3: "&4*-------------------------------------------*"
-
-#Plugin-no-new-update:
-No-update-1: "&a*-------------------------------------------*"
-No-update-2: "&bRedLight-GreenLight &a- Plugin is up to date!"
-No-update-3: "&a*-------------------------------------------*"
-Update-check-failure: "&bRedLight-GreenLight &4- Unable to check for updates! - &c"
-
-#Plugin-help-menu
-Help-1: "&e[--------------- &b[RedLight-GreenLight] &e----------------]"
-Help-2: "&f/red join &7- &dThis command joins the game."
-Help-3: "&f/red leave &7- &dThis command leaves the game."
-Help-4: "&f/red joinall &7- &dThis command adds all players to the game."
-Help-5: "&f/red leaveall &7- &dThis forces all players to leave the game."
-Help-6: "&f/red help &7- &dThis command shows this help menu."
-Help-7: "&f/red reload &7- &dThis command reloads the config."
-Help-8: "&e[------------------- &bPermissions &e---------------------]"
-Help-9: "&f                               redlight.*"
-Help-10: "&f                               redlight.help"
-Help-11: "&f                               redlight.reload"
-Help-12: "&f                               redlight.command.joinall"
-Help-13: "&f                               redlight.command.leaveall"
-Help-14: "&f                               redlight.bypass.joinwipe"
-Help-15: "&f                               redlight.bypass.commands"
-Help-16: "&f                               redlight.bypass.gamemode"
-Help-17: "&e[---------------------------------------------------]"
-Help-18: "&f                               Plugin Version: &a%version%"
-Help-19: "&e[---------------------------------------------------]"
-
-Help-command-no-permission: "&4You do not have the permission &eredlight.help &4needed to run that command"
-
+smite-losing-players: true
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

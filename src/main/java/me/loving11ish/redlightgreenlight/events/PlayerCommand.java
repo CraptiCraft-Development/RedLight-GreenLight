@@ -1,8 +1,8 @@
 package me.loving11ish.redlightgreenlight.events;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
-import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import me.loving11ish.redlightgreenlight.utils.GameManager;
+import me.loving11ish.redlightgreenlight.utils.MessageUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class PlayerCommand implements Listener {
 
-    List<String> bannedcommands = RedLightGreenLight.getPlugin().getConfig().getStringList("Blocked-commands-in-game");
+    private final List<String> bannedCommands = RedLightGreenLight.getPlugin().getConfigManager().getBlockedInGameCommandsList();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerCommandSend(PlayerCommandPreprocessEvent event){
@@ -25,10 +25,10 @@ public class PlayerCommand implements Listener {
                 String[] message = event.getMessage().split(" ");
                 String command = message[0];
 
-                for (String string : bannedcommands) {
+                for (String string : bannedCommands) {
                     if (command.equalsIgnoreCase(string)){
                         event.setCancelled(true);
-                        player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Command-send-error")));
+                        MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getCommandSendError());
                     }
                 }
             }

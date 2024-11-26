@@ -2,20 +2,16 @@ package me.loving11ish.redlightgreenlight.commands.consolecommands;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.commands.ConsoleCommand;
-import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import me.loving11ish.redlightgreenlight.utils.GameManager;
+import me.loving11ish.redlightgreenlight.utils.MessageUtils;
 import me.loving11ish.redlightgreenlight.utils.PlayerInventoryHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class ConsoleJoinAll extends ConsoleCommand {
-
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     @Override
     public String getName() {
@@ -34,9 +30,9 @@ public class ConsoleJoinAll extends ConsoleCommand {
 
     @Override
     public void perform(String[] args) {
-        List<Player> onlinePlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
+        List<Player> onlinePlayers = RedLightGreenLight.getPlugin().onlinePlayers;
         if (!(GameManager.getGameRunning() == 0)) {
-            console.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-already-running")));
+            MessageUtils.sendConsole(RedLightGreenLight.getPlugin().getMessagesManager().getGameRunning());
             return;
         }
         for (Player onlinePlayer : onlinePlayers) {
@@ -49,7 +45,7 @@ public class ConsoleJoinAll extends ConsoleCommand {
                     PlayerInventoryHandler.storeAndClearInventory(onlinePlayerName);
                     GameManager.startGameArena1(onlinePlayerName);
                 } else {
-                    onlinePlayerName.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Failed-join-arena")));
+                    MessageUtils.sendPlayer(onlinePlayerName, RedLightGreenLight.getPlugin().getMessagesManager().getFailedJoinArena());
                 }
             }
         }

@@ -11,13 +11,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class PlayerQuit implements Listener {
 
-    FoliaLib foliaLib = RedLightGreenLight.getFoliaLib();
+    private final FoliaLib foliaLib = RedLightGreenLight.getPlugin().getFoliaLib();
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
@@ -32,15 +31,15 @@ public class PlayerQuit implements Listener {
             }
         }
         if (GameManager.getPlayersInRound().contains(uuid)){
-            if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Smite-losing-players")){
-                foliaLib.getImpl().runNextTick((task) ->
+            if (RedLightGreenLight.getPlugin().getConfigManager().isSmiteLosingPlayers()){
+                foliaLib.getScheduler().runNextTick((task) ->
                         getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~"));
             }
             GameManager.leaveRound(player);
         }
         if (GameManager.getSpectatingPlayers().contains(uuid)){
-            if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Smite-losing-players")){
-                foliaLib.getImpl().runNextTick((task) ->
+            if (RedLightGreenLight.getPlugin().getConfigManager().isSmiteLosingPlayers()){
+                foliaLib.getScheduler().runNextTick((task) ->
                         getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~"));
             }
             GameManager.leaveSpectating(player);

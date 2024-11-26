@@ -15,11 +15,11 @@ public class PlayerHungerChange implements Listener {
     public void onPlayerHungerChange(FoodLevelChangeEvent event){
         Player player = (Player) event.getEntity();
         UUID uuid = player.getUniqueId();
-        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Disable-global-hunger-drain")){
+        if (RedLightGreenLight.getPlugin().getConfigManager().isDisableGlobalHunger()){
             event.setCancelled(true);
             return;
         }
-        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Disable-in-game-hunger-drain")){
+        if (RedLightGreenLight.getPlugin().getConfigManager().isDisableInGameHunger()){
             if (GameManager.getGame1().contains(uuid)){
                 event.setCancelled(true);
             }

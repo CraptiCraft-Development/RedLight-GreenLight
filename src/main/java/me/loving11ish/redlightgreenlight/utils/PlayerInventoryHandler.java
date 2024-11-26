@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public class PlayerInventoryHandler {
 
-    private static Map<UUID, ItemStack[]> items = new HashMap<>();
-    private static Map<UUID, ItemStack[]> armor = new HashMap<>();
+    private static final Map<UUID, ItemStack[]> items = new HashMap<>();
+    private static final Map<UUID, ItemStack[]> armor = new HashMap<>();
 
     public static void storeAndClearInventory(Player player){
         UUID uuid = player.getUniqueId();
@@ -19,11 +19,7 @@ public class PlayerInventoryHandler {
         ItemStack[] armorContents = player.getInventory().getArmorContents();
         items.put(uuid, contents);
         armor.put(uuid, armorContents);
-        player.getInventory().clear();
-        player.getInventory().setHelmet(null);
-        player.getInventory().setChestplate(null);
-        player.getInventory().setLeggings(null);
-        player.getInventory().setBoots(null);
+        clearInventory(player);
     }
     public static void restoreInventory(Player player) {
         UUID uuid = player.getUniqueId();

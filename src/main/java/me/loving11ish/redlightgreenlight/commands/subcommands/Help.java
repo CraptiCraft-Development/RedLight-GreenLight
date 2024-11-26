@@ -2,7 +2,7 @@ package me.loving11ish.redlightgreenlight.commands.subcommands;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.commands.SubCommand;
-import me.loving11ish.redlightgreenlight.utils.ColorUtils;
+import me.loving11ish.redlightgreenlight.utils.MessageUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Help extends SubCommand {
 
-    private PluginDescriptionFile pluginInfo = RedLightGreenLight.getPlugin().getDescription();
-    private String pluginVersion = pluginInfo.getVersion();
+    private final PluginDescriptionFile pluginInfo = RedLightGreenLight.getPlugin().getDescription();
+    private final String pluginVersion = pluginInfo.getVersion();
 
     @Override
     public String getName() {
@@ -30,33 +30,24 @@ public class Help extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        if (player.hasPermission("redlight.help")||player.hasPermission("redlight.*")||player.isOp()){
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-1").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-2").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-3").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-4").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-5").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-6").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-7").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-8").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-9").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-10").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-11").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-12").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-13").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-14").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-15").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-16").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-17").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-18").replace("%version%", pluginVersion)));
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-19").replace("%version%", pluginVersion)));
-        }else {
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Help-command-no-permission")));
+        if (player.hasPermission("redlight.help") || player.hasPermission("redlight.*") || player.isOp()) {
+            MessageUtils.sendPlayer(player, this.getHelpMessage());
+        } else {
+            MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getNoPermission());
         }
     }
 
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
         return null;
+    }
+
+    private String getHelpMessage() {
+        List<String> helpMessage = RedLightGreenLight.getPlugin().getMessagesManager().getHelpCommand();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String message : helpMessage) {
+            stringBuilder.append(message);
+        }
+        return stringBuilder.toString().replace("%version%", pluginVersion);
     }
 }

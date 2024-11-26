@@ -2,14 +2,10 @@ package me.loving11ish.redlightgreenlight.events;
 
 import com.tcoded.folialib.FoliaLib;
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
-import me.loving11ish.redlightgreenlight.utils.ColorUtils;
-import me.loving11ish.redlightgreenlight.utils.CountDownTasksUtils;
-import me.loving11ish.redlightgreenlight.utils.GameManager;
-import me.loving11ish.redlightgreenlight.utils.PlayerInventoryHandler;
+import me.loving11ish.redlightgreenlight.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,55 +18,55 @@ import static org.bukkit.Bukkit.getServer;
 
 public class PlayerMove implements Listener {
 
-    FoliaLib foliaLib = RedLightGreenLight.getFoliaLib();
+    private final FoliaLib foliaLib = RedLightGreenLight.getPlugin().getFoliaLib();
 
-    List<String> wincommands = RedLightGreenLight.getPlugin().getConfig().getStringList("Win-commands-list");
-    List<String> losecommands = RedLightGreenLight.getPlugin().getConfig().getStringList("Lose-commands-list");
+    private final List<String> winCommands = RedLightGreenLight.getPlugin().getConfigManager().getWinCommandsList();
+    private final List<String> loseCommands = RedLightGreenLight.getPlugin().getConfigManager().getLoseCommandsList();
 
 
     @EventHandler
-    public void countDownPlayerMove(PlayerMoveEvent event){
+    public void countDownPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         if (GameManager.getGame1().contains(uuid)) {
-            if (GameManager.getCountDown().equals(1)){
+            if (GameManager.getCountDown().equals(1)) {
                 event.setCancelled(true);
             }
         }
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event){
+    public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         String target = player.getName();
-        if (GameManager.getGame1().contains(uuid)){
-            if (GameManager.getPlayersInRound().contains(uuid)){
-                if (!(GameManager.getLightgreen().equals(0))){
-                    if (!(GameManager.getCountDown().equals(0))){
+        if (GameManager.getGame1().contains(uuid)) {
+            if (GameManager.getPlayersInRound().contains(uuid)) {
+                if (!(GameManager.getLightGreen().equals(0))) {
+                    if (!(GameManager.getCountDown().equals(0))) {
                         return;
                     }
-                    if (!CountDownTasksUtils.wrappedTask4.isCancelled()){
+                    if (!CountDownTasksUtils.wrappedTask4.isCancelled()) {
                         return;
                     }
                     player.setGameMode(GameMode.SURVIVAL);
-                    player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-title")),
-                            ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-loose-subtitle")),
+                    player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getGameLoseTitle()),
+                            ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getGameLoseSubtitle()),
                             10, 30, 10);
-                    if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Smite-losing-players")){
-                        foliaLib.getImpl().runNextTick((task) ->
-                            getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~"));
+                    if (RedLightGreenLight.getPlugin().getConfigManager().isSmiteLosingPlayers()) {
+                        foliaLib.getScheduler().runNextTick((task) ->
+                                getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~"));
                     }
-                    if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")){
-                        for (String string : losecommands) {
-                            foliaLib.getImpl().runNextTick((task) ->
+                    if (RedLightGreenLight.getPlugin().getConfigManager().isRunLoseCommands()) {
+                        for (String string : loseCommands) {
+                            foliaLib.getScheduler().runNextTick((task) ->
                                     getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target)));
                         }
                     }
-                    if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Losers-spectate-game")){
+                    if (RedLightGreenLight.getPlugin().getConfigManager().isLosersSpectateGame()) {
                         GameManager.spectatorTeleportToArena(player);
-                        player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Spectating-message")));
-                    }else {
+                        MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getSpectatingGame());
+                    } else {
                         GameManager.teleportToLobby(player);
                         PlayerInventoryHandler.clearInventory(player);
                         PlayerInventoryHandler.restoreInventory(player);
@@ -83,26 +79,26 @@ public class PlayerMove implements Listener {
     }
 
     @EventHandler
-    public void playerBlockMove(PlayerMoveEvent event){
+    public void playerBlockMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         String target = player.getName();
-        Location blockunder = player.getLocation();
-        Location bottomblock = player.getLocation();
-        blockunder.setY(blockunder.getY() - 1);
-        bottomblock.setY(bottomblock.getY() - 2);
-        if (blockunder.getBlock().getType().equals(Material.getMaterial(RedLightGreenLight.getPlugin().getConfig().getString("Top-trigger-block"))) &&
-                bottomblock.getBlock().getType().equals(Material.getMaterial(RedLightGreenLight.getPlugin().getConfig().getString("Bottom-trigger-block")))){
-            if (GameManager.getGame1().contains(uuid)){
-                if (GameManager.getPlayersInRound().contains(uuid)){
-                    player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-win-title")),
-                            ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-win-subtitle")),
+        Location blockUnder = player.getLocation();
+        Location bottomBlock = player.getLocation();
+        blockUnder.setY(blockUnder.getY() - 1);
+        bottomBlock.setY(bottomBlock.getY() - 2);
+        if (blockUnder.getBlock().getType().equals(RedLightGreenLight.getPlugin().getConfigManager().getTopTriggerBlock()) &&
+                bottomBlock.getBlock().getType().equals(RedLightGreenLight.getPlugin().getConfigManager().getBottomTriggerBlock())) {
+            if (GameManager.getGame1().contains(uuid)) {
+                if (GameManager.getPlayersInRound().contains(uuid)) {
+                    player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getGameWinTitle()),
+                            ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getGameWinSubtitle()),
                             10, 30, 10);
-                    foliaLib.getImpl().runNextTick((task) ->
+                    foliaLib.getScheduler().runNextTick((task) ->
                             getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:firework_rocket ~ ~ ~"));
-                    if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-win-commands")){
-                        for (String string : wincommands) {
-                            foliaLib.getImpl().runNextTick((task) ->
+                    if (RedLightGreenLight.getPlugin().getConfigManager().isRunWinCommands()) {
+                        for (String string : winCommands) {
+                            foliaLib.getScheduler().runNextTick((task) ->
                                     getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target)));
                         }
                     }
