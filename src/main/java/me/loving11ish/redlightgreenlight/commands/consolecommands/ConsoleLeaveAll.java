@@ -2,14 +2,10 @@ package me.loving11ish.redlightgreenlight.commands.consolecommands;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.commands.ConsoleCommand;
-import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import me.loving11ish.redlightgreenlight.utils.GameManager;
-import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
+import me.loving11ish.redlightgreenlight.utils.MessageUtils;
 
 public class ConsoleLeaveAll extends ConsoleCommand {
-
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     @Override
     public String getName() {
@@ -29,7 +25,7 @@ public class ConsoleLeaveAll extends ConsoleCommand {
     @Override
     public void perform(String[] args) {
         if (GameManager.getGameRunning() == 0) {
-            console.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("No-game-running")));
+            MessageUtils.sendConsole(RedLightGreenLight.getPlugin().getMessagesManager().getNoGameRunning());
             return;
         }
         GameManager.endSpectatingGame();

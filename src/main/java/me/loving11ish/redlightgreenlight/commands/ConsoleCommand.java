@@ -8,6 +8,6 @@ public abstract class ConsoleCommand {
 
     public abstract String getSyntax();
 
-    public abstract void perform(String args[]);
+    public abstract void perform(String[] args);
 
 }

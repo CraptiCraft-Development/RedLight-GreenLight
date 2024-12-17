@@ -1,0 +1,92 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                   ----[RedLight-GreenLight]----                                   #
+#                                     ----[By Loving11ish]----                                      #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                  ----[Plugin Messages File]----                                   #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#RedLightGreenLight messages for version: ${project.version}
+
+#Prefix for all messages.
+prefix: "&f[&4&lRL&r&c-&a&lGL&f]"
+
+#Game messages
+joined-game: "&aYou have joined the game.\n&aNow prepare to move only when told!"
+command-send-error: "&cSorry, that command cannot be run during gameplay!"
+failed-join-arena: "&cYou are already part of a game.\n&cUse &e/redlight leave &cto return to main lobby."
+successful-leave-game: "&aYou left the game and were teleported back to the lobby!"
+player-not-in-game: "&cYou are not currently in a game!"
+waiting-for-enough-players: "&eYou are now in the queue to play.&r\n&eNow waiting for enough players to begin the game.&r\n&eUse &b/redlight leave &eto leave the game."
+game-already-running: "&cSorry there is already a game running!"
+no-game-running: "&cSorry there is not currently a game running!"
+spectating-message: "&aYou are now spectating the arena! \n&aUse &b/redlight leave &a to return to spawn."
+
+round-end-title: "&eNo One Won The Game!"
+round-end-subtitle: "&a&lGG's All Round"
+
+greenLight-message: "&aGreen Light"
+#Do you want the RedLight message to be sent as a title & in chat?
+redLight-title-enable: true
+redLight-message: "&cRed Light"
+
+game-start-title: "&a&lLet The Race Begin!"
+game-start-subtitle: "&bBeat everyone to the finish line!"
+
+game-win-title: "&6&lCongratulations!  You Made it!"
+game-win-subtitle: "&bLets wait and see who will join you"
+
+game-loose-title: "&c&lOOF You didn't stand still!"
+game-loose-subtitle: "&4Better luck next time!"
+
+#Do you want the players to be shown a title when they leave the game?
+show-leave-game-title: false
+game-leave-title: "&a&lYou Left The Game!"
+game-leave-subtitle: "&eThank you for playing!"
+
+#Incorrect-command-syntax-console:
+console-syntax-error:
+  - "&4Please provide an argument!\n"
+  - "&4redlight reload\n"
+  - "&4redlight help\n"
+
+plugin-reload-beginning: "&aBeginning plugin reload..."
+plugin-reload-successful: "&aPlugin reload complete!"
+plugin-reload-broadcast: "&aThe plugin is being reloaded!\n&aPlease wait until the plugin is reloaded before starting a new game."
+disabled-world-message: "&4&lRedLight&r&c-&a&lGreenLight has been disabled in this world."
+no-permission: "&cYou do not have permission to do that!"
+unknown-command: "&cCommand not found! Use &e/redlight help."
+
+#Plugin-update-messages:
+update-available:
+  1: "&4*-------------------------------------------*"
+  2: "&cA new version is available!"
+  3: "&4*-------------------------------------------*"
+no-update-available:
+  1: "&a*-------------------------------------------*"
+  2: "&aPlugin is up to date!"
+  3: "&a*-------------------------------------------*"
+update-check-failure: "&4Unable to check for updates! - &c"
+
+#Plugin-help-messages:
+help-command:
+  - "&e[--------------- &b[RedLight-GreenLight] &e----------------]\n"
+  - "&f/red join &7- &dThis command joins the game.\n"
+  - "&f/red leave &7- &dThis command leaves the game.\n"
+  - "&f/red joinall &7- &dThis command adds all players to the game.\n"
+  - "&f/red leaveall &7- &dThis forces all players to leave the game.\n"
+  - "&f/red help &7- &dThis command shows this help menu.\n"
+  - "&f/red reload &7- &dThis command reloads the config.\n"
+  - "&e[------------------- &bPermissions &e---------------------]\n"
+  - "&fredlight.*\n"
+  - "&fredlight.help\n"
+  - "&fredlight.reload\n"
+  - "&fredlight.command.joinall\n"
+  - "&fredlight.command.leaveall\n"
+  - "&fredlight.bypass.joinwipe\n"
+  - "&fredlight.bypass.commands\n"
+  - "&fredlight.bypass.gamemode\n"
+  - "&e[---------------------------------------------------]\n"
+  - "&fPlugin Version: &a%version%\n"
+  - "&e[---------------------------------------------------]"
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#

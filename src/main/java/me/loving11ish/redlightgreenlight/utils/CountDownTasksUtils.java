@@ -21,34 +21,28 @@ import static org.bukkit.Bukkit.getServer;
 
 public class CountDownTasksUtils {
 
-    private static FoliaLib foliaLib = RedLightGreenLight.getFoliaLib();
+    private static final FoliaLib foliaLib = RedLightGreenLight.getPlugin().getFoliaLib();
 
     public static WrappedTask wrappedTask1;
     public static WrappedTask wrappedTask2;
     public static WrappedTask wrappedTask3;
     public static WrappedTask wrappedTask4;
 
-    private static List<String> losecommands = RedLightGreenLight.getPlugin().getConfig().getStringList("Lose-commands-list");
-
-    final static double x = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-x");
-    final static double y = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-y");
-    final static double z = RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-z");
-    final static float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-yaw");
-    final static float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("Arena-Start-pitch");
+    private static final List<String> loseCommands = RedLightGreenLight.getPlugin().getConfigManager().getLoseCommandsList();
 
     public static void runTaskStartArena1(){
-        wrappedTask1 = foliaLib.getImpl().runTimerAsync(new Runnable() {
-            Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Game-starting-countdown-length");
+        wrappedTask1 = foliaLib.getScheduler().runTimerAsync(new Runnable() {
+            Integer time = RedLightGreenLight.getPlugin().getConfigManager().getGameStartCountdown();
             @Override
             public void run() {
                 if (time == 1){
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
                     for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                        Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
+                        Location location = RedLightGreenLight.getPlugin().getConfigManager().getArenaStartLocation();
                         PaperLib.teleportAsync(player, location);
                         player.setWalkSpeed(0.0f);
-                        foliaLib.getImpl().runAtEntityLater(player, () ->
+                        foliaLib.getScheduler().runAtEntityLater(player, () ->
                                 player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 10, 100000, false, false, false)), 50L, TimeUnit.MILLISECONDS);
                     }
                     CountDownTasksUtils.runTaskGoGame1();
@@ -71,7 +65,7 @@ public class CountDownTasksUtils {
     }
 
     public static void runTaskGoGame1(){
-        wrappedTask2 = foliaLib.getImpl().runTimerAsync(new Runnable() {
+        wrappedTask2 = foliaLib.getScheduler().runTimerAsync(new Runnable() {
             Integer time = 10;
             @Override
             public void run() {
@@ -79,17 +73,17 @@ public class CountDownTasksUtils {
                     ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
                     for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                        player.setInvulnerable(RedLightGreenLight.getPlugin().getConfig().getBoolean("Join-player-invulnerable"));
+                        player.setInvulnerable(RedLightGreenLight.getPlugin().getConfigManager().isJoinPlayerInvulnerable());
                         player.setHealth(20.0);
                         player.setFoodLevel(20);
                         if (!(player.hasPermission("redlight.bypass.gamemode") || player.hasPermission("redlight.*") || player.isOp())) {
                             player.setGameMode(GameMode.ADVENTURE);
                         }
-                        player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-start-title")),
-                                ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Game-start-subtitle")), 20, 80, 20);
+                        player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getGameStartTitle()),
+                                ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getGameStartSubtitle()), 20, 80, 20);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 2, 2);
                         player.setWalkSpeed(0.2f);
-                        foliaLib.getImpl().runAtEntityLater(player, () ->
+                        foliaLib.getScheduler().runAtEntityLater(player, () ->
                                 player.removePotionEffect(PotionEffectType.JUMP), 50L, TimeUnit.MILLISECONDS);
                         GameManager.setCountDown(0);
                         GameManager.addToRound(player);
@@ -112,8 +106,8 @@ public class CountDownTasksUtils {
     }
 
     public static void game1Timer() {
-        wrappedTask3 = foliaLib.getImpl().runTimerAsync(new Runnable() {
-            Integer time = RedLightGreenLight.getPlugin().getConfig().getInt("Total-game-length");
+        wrappedTask3 = foliaLib.getScheduler().runTimerAsync(new Runnable() {
+            Integer time = RedLightGreenLight.getPlugin().getConfigManager().getTotalGameLength();
             @Override
             public void run() {
                 if (time == 30) {
@@ -163,13 +157,13 @@ public class CountDownTasksUtils {
                     for (UUID uuid : playersInGame) {
                         Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
                         String target = player.getName();
-                        foliaLib.getImpl().runNextTick((task) ->
+                        foliaLib.getScheduler().runNextTick((task) ->
                                 getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~"));
-                        player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-title")),
-                                ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Round-end-subtitle")), 10, 30, 10);
-                        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Run-lose-commands")) {
-                            for (String string : losecommands) {
-                                foliaLib.getImpl().runNextTick((task) ->
+                        player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getRoundEndTitle()),
+                                ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getRoundEndSubtitle()), 10, 30, 10);
+                        if (RedLightGreenLight.getPlugin().getConfigManager().isRunLoseCommands()) {
+                            for (String string : loseCommands) {
+                                foliaLib.getScheduler().runNextTick((task) ->
                                         getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target)));
                             }
                         }
@@ -183,34 +177,34 @@ public class CountDownTasksUtils {
                     Random random = new Random();
                     int r = random.nextInt(10);
                     if (r == 5 || r == 8 || r == 2) {
-                        if (time < RedLightGreenLight.getPlugin().getConfig().getInt("Total-game-length") -5){
+                        if (time < RedLightGreenLight.getPlugin().getConfigManager().getTotalGameLength() -5){
                             coolDownTimer();
-                            GameManager.setLightgreen(1);
+                            GameManager.setLightGreen(1);
                             ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
                             for (UUID uuid : playersInGame) {
                                 Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                                if (RedLightGreenLight.getPlugin().getConfig().getBoolean("RedLight-title-enable")) {
-                                    player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("RedLight-message")),
+                                if (RedLightGreenLight.getPlugin().getMessagesManager().isSendRedLightTitle()) {
+                                    player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getMessagesManager().getRedLight()),
                                             ColorUtils.translateColorCodes(" "), 10, 30, 10);
                                 }
-                                player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("RedLight-message")));
+                                MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getRedLight());
                             }
                         }
                     }else {
-                        GameManager.setLightgreen(0);
+                        GameManager.setLightGreen(0);
                         ArrayList<UUID> playersInGame = new ArrayList<>(GameManager.getGame1());
                         for (UUID uuid : playersInGame) {
                             Player player = (Player) Bukkit.getServer().getOfflinePlayer(uuid);
-                            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("GreenLight-message")));
+                            MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getGreenLight());
                         }
                     }
-                    if (GameManager.getGame1().size() == 0 || GameManager.getPlayersInRound().size() == 0){
-                        if (!(GameManager.getSpectatingPlayers().size() == 0)){
+                    if (GameManager.getGame1().isEmpty() || GameManager.getPlayersInRound().isEmpty()){
+                        if (!(GameManager.getSpectatingPlayers().isEmpty())){
                             GameManager.endSpectatingGame();
                         }
                         GameManager.getPlayersInRound().clear();
                         GameManager.getGame1().clear();
-                        GameManager.setLightgreen(0);
+                        GameManager.setLightGreen(0);
                         GameManager.setGameRunning(0);
 
                         wrappedTask3.cancel();
@@ -222,10 +216,10 @@ public class CountDownTasksUtils {
         }, 1L, 1L, TimeUnit.SECONDS);
     }
 
-    private static long repeatTime = RedLightGreenLight.getPlugin().getConfig().getInt("RedLight-delay-checking-time");
+    private static final long repeatTime = RedLightGreenLight.getPlugin().getConfigManager().getRedLightDelayCheckTime();
 
     public static void coolDownTimer(){
-        wrappedTask4 = foliaLib.getImpl().runTimerAsync(new Runnable() {
+        wrappedTask4 = foliaLib.getScheduler().runTimerAsync(new Runnable() {
             Integer time = 2;
             @Override
             public void run() {

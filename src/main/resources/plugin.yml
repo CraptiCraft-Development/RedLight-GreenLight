@@ -5,8 +5,16 @@ api-version: 1.13
 folia-supported: true
 authors: [ Loving11ish ]
 description: A Red Light, Green Light mini-game based off the Netflix series Squid Games.
+
 commands:
   redlight:
     description: The main command.
     usage: /redlight <command>
     aliases: [ rd, red ]
+
+permissions:
+  redlight.*:
+    description: Gives access to all RedLight-GreenLight features.
+    default: op
+    children:
+

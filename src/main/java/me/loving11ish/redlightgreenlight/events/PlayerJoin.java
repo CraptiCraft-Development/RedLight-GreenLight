@@ -19,9 +19,9 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-        player.setInvulnerable(RedLightGreenLight.getPlugin().getConfig().getBoolean("Join-player-invulnerable"));
+        player.setInvulnerable(RedLightGreenLight.getPlugin().getConfigManager().isJoinPlayerInvulnerable());
         player.setFoodLevel(20);
-        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Wipe-inventory-on-join")){
+        if (RedLightGreenLight.getPlugin().getConfigManager().isWipeInventoryOnJoin()){
             if (!(player.hasPermission("redlight.bypass.joinwipe") || player.hasPermission("redlight.*") || player.isOp())){
                 PlayerInventoryHandler.clearInventory(player);
             }
@@ -35,17 +35,12 @@ public class PlayerJoin implements Listener {
         if (GameManager.getSpectatingPlayers().contains(uuid)){
             GameManager.leaveSpectating(player);
         }
-        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Send-welcome-title")){
-            player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Welcome-player-title")),
-                    ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Welcome-player-subtitle")), 20, 100, 20);
+        if (RedLightGreenLight.getPlugin().getConfigManager().isSendWelcomeTitle()){
+            player.sendTitle(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfigManager().getWelcomeTitle()),
+                    ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfigManager().getWelcomeSubTitle()), 20, 100, 20);
         }
-        if (RedLightGreenLight.getPlugin().getConfig().getBoolean("Handle-player-join-spawn-event")){
-            double x = RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-x");
-            double y = RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-y");
-            double z = RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-z");
-            float yaw = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-yaw");
-            float pitch = (float) RedLightGreenLight.getPlugin().getConfig().getDouble("lobby-pitch");
-            Location location = new Location(player.getWorld(), x, y, z, yaw, pitch);
+        if (RedLightGreenLight.getPlugin().getConfigManager().isHandleJoinSpawnEvent()){
+            Location location = RedLightGreenLight.getPlugin().getConfigManager().getLobbyLocation();
             PaperLib.teleportAsync(player, location);
         }
     }

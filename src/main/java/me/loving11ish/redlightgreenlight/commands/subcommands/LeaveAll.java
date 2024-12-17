@@ -2,13 +2,14 @@ package me.loving11ish.redlightgreenlight.commands.subcommands;
 
 import me.loving11ish.redlightgreenlight.RedLightGreenLight;
 import me.loving11ish.redlightgreenlight.commands.SubCommand;
-import me.loving11ish.redlightgreenlight.utils.ColorUtils;
 import me.loving11ish.redlightgreenlight.utils.GameManager;
+import me.loving11ish.redlightgreenlight.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
 public class LeaveAll extends SubCommand {
+
     @Override
     public String getName() {
         return "leaveall";
@@ -28,21 +29,20 @@ public class LeaveAll extends SubCommand {
     public void perform(Player player, String[] args) {
         if (player.hasPermission("redlight.command.leaveall") || player.hasPermission("redlight.command.*") ||
                 player.hasPermission("redlight.*") || player.isOp()) {
-            if (!(RedLightGreenLight.getPlugin().getConfig().getList("Disabled-worlds").contains(player.getWorld().getName()))) {
+            if (!(RedLightGreenLight.getPlugin().getConfigManager().getDisabledWorldsList().contains(player.getWorld().getName()))) {
                 if (GameManager.getGameRunning() == 0) {
-                    player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("No-game-running")));
+                    MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getNoGameRunning());
                     return;
                 }
                 GameManager.endSpectatingGame();
                 GameManager.endGameArena1();
-            }else {
-                player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Disabled-world-message")));
+            } else {
+                MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getDisabledWorld());
             }
-        }else {
-            player.sendMessage(ColorUtils.translateColorCodes(RedLightGreenLight.getPlugin().getConfig().getString("Leaveall-command-no-permission")));
+        } else {
+            MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getNoPermission());
         }
     }
-
 
     @Override
     public List<String> getSubcommandArguments(Player player, String[] args) {
