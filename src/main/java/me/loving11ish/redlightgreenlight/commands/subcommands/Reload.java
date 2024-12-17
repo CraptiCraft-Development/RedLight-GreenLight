@@ -41,6 +41,7 @@ public class Reload extends SubCommand {
 
             MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getPluginReloadStart());
             MessageUtils.sendConsole(RedLightGreenLight.getPlugin().getMessagesManager().getPluginReloadStart());
+            MessageUtils.broadcastMessage(RedLightGreenLight.getPlugin().getMessagesManager().getPluginReloadBroadcast());
 
             RedLightGreenLight.getPlugin().getCommandManager().reloadPlugin();
 
@@ -48,6 +49,7 @@ public class Reload extends SubCommand {
             foliaLib.getScheduler().runLater(() -> {
                 MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getPluginReloadComplete());
                 MessageUtils.sendConsole(RedLightGreenLight.getPlugin().getMessagesManager().getPluginReloadComplete());
+                MessageUtils.broadcastMessage(RedLightGreenLight.getPlugin().getMessagesManager().getPluginReloadComplete());
             }, 8L, TimeUnit.SECONDS);
 
         } else {

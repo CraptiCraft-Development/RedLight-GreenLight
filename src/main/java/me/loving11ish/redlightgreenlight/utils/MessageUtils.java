@@ -54,11 +54,37 @@ public class MessageUtils {
     }
 
     /**
-     * @param sender  The command sender to send the message too.
+     * @param message The message to be broadcast with prefix applied. Supports color codes.
+     */
+    public static void broadcastMessage(String message) {
+        Bukkit.broadcastMessage(ColorUtils.translateColorCodes(prefix + " &l" + message));
+    }
+
+    /**
+     * @param sender  The sender to send the message too.
      * @param message The message to be sent with prefix applied. Supports color codes.
      */
     public static void sendSender(CommandSender sender, String message) {
-        sender.sendMessage(ColorUtils.translateColorCodes(prefix + " &r" + message));
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            sendPlayer(player, message);
+        } else {
+            sendConsole(message);
+        }
+    }
+
+    /**
+     * @param sender  The sender to send the message too.
+     * @param level   The log level of the message. Supports: info, warning, error, and severe.
+     * @param message The message to be sent with prefix applied. Supports color codes.
+     */
+    public static void sendSender(CommandSender sender, String level, String message) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            sendPlayer(player, message);
+        } else {
+            sendConsole(level, message);
+        }
     }
 
     /**
@@ -66,7 +92,7 @@ public class MessageUtils {
      */
     public static void sendDebugConsole(String message) {
         if (debug) {
-            console.sendMessage(ColorUtils.translateColorCodes("&6UStats-Debug&7: " + message));
+            console.sendMessage(ColorUtils.translateColorCodes("&6RL-GL-Debug&7: " + message));
         }
     }
 
@@ -77,7 +103,7 @@ public class MessageUtils {
     public static void sendDebugConsole(String level, String message) {
         if (debug) {
             level = setDebugLevel(level);
-            console.sendMessage(ColorUtils.translateColorCodes("&6UStats-Debug&7: [" + level + "&7] - " + levelColor + message));
+            console.sendMessage(ColorUtils.translateColorCodes("&6RL-GL-Debug&7: [" + level + "&7] - " + levelColor + message));
         }
     }
 

@@ -52,11 +52,11 @@ public final class RedLightGreenLight extends JavaPlugin {
     // Commands
     private CommandManager commandManager;
 
-    // Lists
-    public List<Player> onlinePlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
-
     // Tasks
     private WrappedTask onlinePlayerUpdateTasks;
+
+    // Lists
+    public final List<Player> onlinePlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
 
     @Override
     public void onLoad() {
@@ -188,7 +188,7 @@ public final class RedLightGreenLight extends JavaPlugin {
         MessageUtils.sendConsole("-------------------------------------------");
 
         // Start online player update task
-        this.onlinePlayerUpdateTasks = foliaLib.getScheduler().runTimer(new OnlinePlayerTasks(), 5L, 300L, TimeUnit.SECONDS);
+        this.onlinePlayerUpdateTasks = foliaLib.getScheduler().runTimerAsync(new OnlinePlayerTasks(), 5L, 300L, TimeUnit.SECONDS);
 
         // Check for available updates
         new UpdateChecker(96866).getVersion(version -> {
@@ -324,9 +324,9 @@ public final class RedLightGreenLight extends JavaPlugin {
             } else if (bukkitVersion.contains("1.21.2")) {
                 serverVersion = ServerVersion.v1_21_R3;
             } else if (bukkitVersion.contains("1.21.3")) {
-                serverVersion = ServerVersion.v1_21_R3;
-            } else if (bukkitVersion.contains("1.21.4")) {
                 serverVersion = ServerVersion.v1_21_R4;
+            } else if (bukkitVersion.contains("1.21.4")) {
+                serverVersion = ServerVersion.v1_21_R5;
             } else {
                 serverVersion = ServerVersion.valueOf(packageName.replace("org.bukkit.craftbukkit.", ""));
             }

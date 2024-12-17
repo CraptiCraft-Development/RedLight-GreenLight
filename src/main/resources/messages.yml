@@ -52,6 +52,7 @@ console-syntax-error:
 
 plugin-reload-beginning: "&aBeginning plugin reload..."
 plugin-reload-successful: "&aPlugin reload complete!"
+plugin-reload-broadcast: "&aThe plugin is being reloaded!\n&aPlease wait until the plugin is reloaded before starting a new game."
 disabled-world-message: "&4&lRedLight&r&c-&a&lGreenLight has been disabled in this world."
 no-permission: "&cYou do not have permission to do that!"
 unknown-command: "&cCommand not found! Use &e/redlight help."

@@ -7,7 +7,14 @@ public class OnlinePlayerTasks implements Runnable {
 
     @Override
     public void run() {
-        RedLightGreenLight.getPlugin().onlinePlayers.clear();
-        RedLightGreenLight.getPlugin().onlinePlayers.addAll(Bukkit.getOnlinePlayers());
+        synchronized (RedLightGreenLight.getPlugin().onlinePlayers) {
+            RedLightGreenLight.getPlugin().onlinePlayers.clear();
+        }
+
+        RedLightGreenLight.getPlugin().getFoliaLib().getScheduler().runNextTick((task) -> {
+            synchronized (RedLightGreenLight.getPlugin().onlinePlayers) {
+                RedLightGreenLight.getPlugin().onlinePlayers.addAll(Bukkit.getOnlinePlayers());
+            }
+        });
     }
 }

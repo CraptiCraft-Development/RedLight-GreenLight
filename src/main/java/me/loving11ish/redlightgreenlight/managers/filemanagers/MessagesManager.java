@@ -33,6 +33,7 @@ public class MessagesManager {
     private String gameLeaveSubtitle;
     private String pluginReloadStart;
     private String pluginReloadComplete;
+    private String pluginReloadBroadcast;
     private String disabledWorld;
     private String noPermission;
     private String unknownCommand;
@@ -83,6 +84,7 @@ public class MessagesManager {
         gameLeaveSubtitle = messages.getString("game-leave-subtitle", "&eThank you for playing!");
         pluginReloadStart = messages.getString("plugin-reload-beginning", "&aBeginning plugin reload...");
         pluginReloadComplete = messages.getString("plugin-reload-successful", "&aPlugin reload complete!");
+        pluginReloadBroadcast = messages.getString("plugin-reload-broadcast", "&aThe plugin is being reloaded!\\n&aPlease wait until the plugin is reloaded before starting a new game.");
         disabledWorld = messages.getString("disabled-world-message", "&4&lRedLight&r&c-&a&lGreenLight has been disabled in this world.");
         noPermission = messages.getString("no-permission", "&cYou do not have permission to do that!");
         unknownCommand = messages.getString("unknown-command", "&cCommand not found! Use &e/redlight help.");
@@ -199,6 +201,10 @@ public class MessagesManager {
 
     public String getPluginReloadComplete() {
         return pluginReloadComplete;
+    }
+
+    public String getPluginReloadBroadcast() {
+        return pluginReloadBroadcast;
     }
 
     public String getDisabledWorld() {
