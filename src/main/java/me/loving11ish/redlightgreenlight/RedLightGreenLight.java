@@ -162,6 +162,9 @@ public final class RedLightGreenLight extends JavaPlugin {
             return;
         }
 
+        // Load Locations
+        getConfigManager().loadLocations();
+
         //Register commands here
         setCommandManager(new CommandManager());
         getCommand("redlight").setExecutor(getCommandManager());
@@ -182,7 +185,7 @@ public final class RedLightGreenLight extends JavaPlugin {
         MessageUtils.sendConsole("&aPlugin Version: &d&l" + pluginVersion);
         MessageUtils.sendDebugConsole("&e&lDeveloper debug mode enabled!");
         MessageUtils.sendDebugConsole("&e&lThis WILL fill the console");
-        MessageUtils.sendDebugConsole("&e&lwith additional UStats information!");
+        MessageUtils.sendDebugConsole("&e&lwith additional RL-GL information!");
         MessageUtils.sendDebugConsole("&e&lThis setting is not intended for ");
         MessageUtils.sendDebugConsole("&e&lcontinuous use!");
         MessageUtils.sendConsole("-------------------------------------------");
@@ -258,8 +261,8 @@ public final class RedLightGreenLight extends JavaPlugin {
             if (foliaLib.isUnsupported()) {
                 Bukkit.getScheduler().cancelTasks(this);
             }
-            MessageUtils.sendConsole("&aBackground tasks have disabled successfully!");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
+        } finally {
             MessageUtils.sendConsole("&aBackground tasks have disabled successfully!");
         }
 

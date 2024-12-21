@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.bukkit.Bukkit.getServer;
@@ -19,10 +18,6 @@ import static org.bukkit.Bukkit.getServer;
 public class PlayerMove implements Listener {
 
     private final FoliaLib foliaLib = RedLightGreenLight.getPlugin().getFoliaLib();
-
-    private final List<String> winCommands = RedLightGreenLight.getPlugin().getConfigManager().getWinCommandsList();
-    private final List<String> loseCommands = RedLightGreenLight.getPlugin().getConfigManager().getLoseCommandsList();
-
 
     @EventHandler
     public void countDownPlayerMove(PlayerMoveEvent event) {
@@ -58,7 +53,7 @@ public class PlayerMove implements Listener {
                                 getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:lightning_bolt ~ ~ ~"));
                     }
                     if (RedLightGreenLight.getPlugin().getConfigManager().isRunLoseCommands()) {
-                        for (String string : loseCommands) {
+                        for (String string : RedLightGreenLight.getPlugin().getConfigManager().getLoseCommandsList()) {
                             foliaLib.getScheduler().runNextTick((task) ->
                                     getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target)));
                         }
@@ -97,7 +92,7 @@ public class PlayerMove implements Listener {
                     foliaLib.getScheduler().runNextTick((task) ->
                             getServer().dispatchCommand(Bukkit.getConsoleSender(), "execute at " + player.getName() + " run summon minecraft:firework_rocket ~ ~ ~"));
                     if (RedLightGreenLight.getPlugin().getConfigManager().isRunWinCommands()) {
-                        for (String string : winCommands) {
+                        for (String string : RedLightGreenLight.getPlugin().getConfigManager().getWinCommandsList()) {
                             foliaLib.getScheduler().runNextTick((task) ->
                                     getServer().dispatchCommand(Bukkit.getConsoleSender(), string.replace("%player%", target)));
                         }

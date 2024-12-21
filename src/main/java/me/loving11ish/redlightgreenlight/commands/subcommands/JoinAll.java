@@ -38,20 +38,24 @@ public class JoinAll extends SubCommand {
                     MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getGameRunning());
                     return;
                 }
-                for (Player onlinePlayer : onlinePlayers) {
-                    String onPlayerName = onlinePlayer.getName();
-                    Player onlinePlayerName = Bukkit.getServer().getPlayer(onPlayerName);
-                    if (onlinePlayerName != null) {
-                        UUID onlineUUID = onlinePlayerName.getUniqueId();
-                        if (!(GameManager.getGame1().contains(onlineUUID))) {
-                            GameManager.addToGame1(onlinePlayerName);
-                            PlayerInventoryHandler.storeAndClearInventory(onlinePlayerName);
-                            GameManager.startGameArena1(onlinePlayerName);
-                        } else {
-                            MessageUtils.sendPlayer(onlinePlayerName, RedLightGreenLight.getPlugin().getMessagesManager().getFailedJoinArena());
-                        }
+                RedLightGreenLight.getPlugin().getFoliaLib().getScheduler().runAsync((task) -> {
+                    for (Player onlinePlayer : onlinePlayers) {
+                        String onPlayerName = onlinePlayer.getName();
+                        Player onlinePlayerName = Bukkit.getServer().getPlayer(onPlayerName);
+                        RedLightGreenLight.getPlugin().getFoliaLib().getScheduler().runAtEntity(onlinePlayerName, (t) -> {
+                            if (onlinePlayerName != null) {
+                                UUID onlineUUID = onlinePlayerName.getUniqueId();
+                                if (!(GameManager.getGame1().contains(onlineUUID))) {
+                                    GameManager.addToGame1(onlinePlayerName);
+                                    PlayerInventoryHandler.storeAndClearInventory(onlinePlayerName);
+                                    GameManager.startGameArena1(onlinePlayerName);
+                                } else {
+                                    MessageUtils.sendPlayer(onlinePlayerName, RedLightGreenLight.getPlugin().getMessagesManager().getFailedJoinArena());
+                                }
+                            }
+                        });
                     }
-                }
+                });
             } else {
                 MessageUtils.sendPlayer(player, RedLightGreenLight.getPlugin().getMessagesManager().getDisabledWorld());
             }
