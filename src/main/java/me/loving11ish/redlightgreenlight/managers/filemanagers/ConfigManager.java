@@ -1,5 +1,6 @@
 package me.loving11ish.redlightgreenlight.managers.filemanagers;
 
+import me.loving11ish.redlightgreenlight.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -90,7 +91,9 @@ public class ConfigManager {
         // Load materials
         topTriggerBlock = Material.getMaterial(config.getString("top-trigger-block", "COAL_BLOCK"));
         bottomTriggerBlock = Material.getMaterial(config.getString("bottom-trigger-block", "GOLD_BLOCK"));
+    }
 
+    public void loadLocations() {
         // Load locations
         String lobbyWorld = config.getString("lobby-position.world-name", "world");
         double lobbyX = config.getDouble("lobby-position.x", -233.0);
@@ -102,8 +105,11 @@ public class ConfigManager {
         World lobbyBukkitWorld;
         try {
             lobbyBukkitWorld = Bukkit.getWorld(lobbyWorld);
+            MessageUtils.sendDebugConsole("info", "Lobby world &e" + lobbyBukkitWorld.getName() + " &aloaded successfully!");
         } catch (NullPointerException e) {
             lobbyBukkitWorld = Bukkit.getServer().getWorlds().get(0);
+            MessageUtils.sendConsole("warning", "Lobby world &e" + lobbyWorld + " &cnot found! Using default world instead.");
+            MessageUtils.sendConsole("info", "Lobby world &e" + lobbyBukkitWorld.getName() + " &aloaded successfully!");
         }
         lobbyLocation = new Location(lobbyBukkitWorld, lobbyX, lobbyY, lobbyZ, lobbyYaw, lobbyPitch);
 
@@ -117,8 +123,11 @@ public class ConfigManager {
         World arenaBukkitWorld;
         try {
             arenaBukkitWorld = Bukkit.getWorld(arenaWorld);
+            MessageUtils.sendDebugConsole("info", "Arena world &e" + arenaBukkitWorld.getName() + " &aloaded successfully!");
         } catch (NullPointerException e) {
             arenaBukkitWorld = Bukkit.getServer().getWorlds().get(0);
+            MessageUtils.sendConsole("warning", "Arena world &e" + arenaWorld + " &cnot found! Using default world instead.");
+            MessageUtils.sendConsole("info", "Arena world &e" + arenaBukkitWorld.getName() + " &aloaded successfully!");
         }
         arenaStartLocation = new Location(arenaBukkitWorld, arenaX, arenaY, arenaZ, arenaYaw, arenaPitch);
 
@@ -132,8 +141,11 @@ public class ConfigManager {
         World spectateBukkitWorld;
         try {
             spectateBukkitWorld = Bukkit.getWorld(spectateWorld);
+            MessageUtils.sendDebugConsole("info", "Spectate world &e" + spectateBukkitWorld.getName() + " &aloaded successfully!");
         } catch (NullPointerException e) {
             spectateBukkitWorld = Bukkit.getServer().getWorlds().get(0);
+            MessageUtils.sendConsole("warning", "Spectate world &e" + spectateWorld + " &cnot found! Using default world instead.");
+            MessageUtils.sendConsole("info", "Spectate world &e" + spectateBukkitWorld.getName() + " &aloaded successfully!");
         }
         spectateLocation = new Location(spectateBukkitWorld, spectateX, spectateY, spectateZ, spectateYaw, spectatePitch);
     }

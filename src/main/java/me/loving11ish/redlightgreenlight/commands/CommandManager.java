@@ -136,8 +136,8 @@ public class CommandManager implements TabExecutor {
             if (foliaLib.isUnsupported()) {
                 Bukkit.getScheduler().cancelTasks(RedLightGreenLight.getPlugin());
             }
-            MessageUtils.sendConsole("&aBackground tasks have disabled successfully!");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
+        } finally {
             MessageUtils.sendConsole("&aBackground tasks have disabled successfully!");
         }
 
@@ -186,9 +186,17 @@ public class CommandManager implements TabExecutor {
             MessageUtils.setDebug(RedLightGreenLight.getPlugin().getConfigManager().isDebugMode());
             MessageUtils.sendConsole("&aReloading messages.yml...");
 
+            // Load locations from config.yml
+            RedLightGreenLight.getPlugin().getConfigManager().loadLocations();
+
             foliaLib.getScheduler().runLaterAsync(() -> {
                 // Signal that the plugin has been reloaded
                 MessageUtils.sendConsole("&aPlugin has been reloaded successfully!");
+                MessageUtils.sendDebugConsole("&e&lDeveloper debug mode enabled!");
+                MessageUtils.sendDebugConsole("&e&lThis WILL fill the console");
+                MessageUtils.sendDebugConsole("&e&lwith additional RL-GL information!");
+                MessageUtils.sendDebugConsole("&e&lThis setting is not intended for ");
+                MessageUtils.sendDebugConsole("&e&lcontinuous use!");
                 MessageUtils.sendConsole("-----------------------------------------");
 
                 RedLightGreenLight.getPlugin().setPluginReloading(false);
