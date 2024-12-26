@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class GameManager {
 
@@ -85,19 +86,118 @@ public class GameManager {
     }
 
     public static void teleportToLobby(Player player) {
-        Location location = RedLightGreenLight.getPlugin().getConfigManager().getLobbyLocation();
-        PaperLib.teleportAsync(player, location);
-        player.setInvulnerable(RedLightGreenLight.getPlugin().getConfigManager().isLeavePlayerInvulnerable());
-        if (!(player.hasPermission("redlight.bypass.gamemode") || player.hasPermission("redlight.*") || player.isOp())) {
-            player.setGameMode(GameMode.SURVIVAL);
+        if (player == null) {
+            // Handle null player
+            MessageUtils.sendConsole("error", "Method: teleportToLobby(Player player)");
+            MessageUtils.sendConsole("error", "Player is null!");
+            return;
         }
+
+        Location location = RedLightGreenLight.getPlugin().getConfigManager().getLobbyLocation();
+        if (location == null) {
+            // Handle null location
+            MessageUtils.sendConsole("error", "Method: teleportToLobby(Player player)");
+            MessageUtils.sendConsole("error", "Lobby location is null!");
+            return;
+        }
+
+        CompletableFuture<Boolean> future = PaperLib.teleportAsync(player, location);
+        future.thenAccept(result -> {
+            if (result) {
+                player.setInvulnerable(RedLightGreenLight.getPlugin().getConfigManager().isLeavePlayerInvulnerable());
+                if (!(player.hasPermission("redlight.bypass.gamemode") || player.hasPermission("redlight.*") || player.isOp())) {
+                    player.setGameMode(GameMode.SURVIVAL);
+                    MessageUtils.sendDebugConsole("info", "Player " + player.getName() + " did not have bypass permission.");
+                }
+                MessageUtils.sendDebugConsole("info", "Player " + player.getName() + " teleported to lobby location.");
+            } else {
+                // Handle teleportation failure
+                MessageUtils.sendConsole("error", "Method: teleportToLobby(Player player)");
+                MessageUtils.sendConsole("error", "Failed to teleport player to lobby location!");
+                MessageUtils.sendConsole("error", "Using PaperLib teleportAsync method.");
+                MessageUtils.sendConsole("info", "Trying alternate FoliaLib AsyncTeleport method.");
+                CompletableFuture<Boolean> foliaLibFuture = RedLightGreenLight.getPlugin().getFoliaLib().getScheduler().teleportAsync(player, location);
+                foliaLibFuture.thenAccept(foliaLibResult -> {
+                    if (foliaLibResult) {
+                        player.setInvulnerable(RedLightGreenLight.getPlugin().getConfigManager().isLeavePlayerInvulnerable());
+                        if (!(player.hasPermission("redlight.bypass.gamemode") || player.hasPermission("redlight.*") || player.isOp())) {
+                            player.setGameMode(GameMode.SURVIVAL);
+                        }
+                        MessageUtils.sendDebugConsole("info", "Player " + player.getName() + " teleported to lobby location.");
+                    } else {
+                        // Handle fallback teleportation failure
+                        MessageUtils.sendConsole("error", "Method: teleportToLobby(Player player)");
+                        MessageUtils.sendConsole("error", "Failed to teleport player to lobby location!");
+                        MessageUtils.sendConsole("error", "Using FoliaLib AsyncTeleport method.");
+                        MessageUtils.sendConsole("severe", "<=============================================>");
+                        MessageUtils.sendConsole("severe", "Failed to teleport player to lobby location!");
+                        MessageUtils.sendConsole("severe", "Player: " + player.getName());
+                        MessageUtils.sendConsole("severe", "Location: " + location);
+                        MessageUtils.sendConsole("severe", "Attempted using PaperLib teleportAsync method.");
+                        MessageUtils.sendConsole("severe", "Attempted using backup FoliaLib AsyncTeleport method.");
+                        MessageUtils.sendConsole("severe", "Please check your lobby location in the config.");
+                        MessageUtils.sendConsole("severe", "Please check your server console for more information.");
+                        MessageUtils.sendConsole("severe", "Please send your server console log to the plugin developer.");
+                        MessageUtils.sendConsole("severe", "Discord: https://discord.gg/crapticraft");
+                        MessageUtils.sendConsole("severe", "<=============================================>");
+                    }
+                });
+            }
+        });
     }
 
     public static void spectatorTeleportToArena(Player player) {
+        if (player == null) {
+            // Handle null player
+            MessageUtils.sendConsole("error", "Method: spectatorTeleportToArena(Player player)");
+            MessageUtils.sendConsole("error", "Player is null!");
+            return;
+        }
+
         Location location = RedLightGreenLight.getPlugin().getConfigManager().getSpectateLocation();
-        PaperLib.teleportAsync(player, location);
-        player.setGameMode(GameMode.SPECTATOR);
-        GameManager.addToSpectating(player);
+        if (location == null) {
+            // Handle null location
+            MessageUtils.sendConsole("error", "Method: spectatorTeleportToArena(Player player)");
+            MessageUtils.sendConsole("error", "Spectate location is null!");
+            return;
+        }
+
+        CompletableFuture<Boolean> future = PaperLib.teleportAsync(player, location);
+        future.thenAccept(result -> {
+            if (result) {
+                player.setGameMode(GameMode.SPECTATOR);
+                MessageUtils.sendDebugConsole("info", "Player " + player.getName() + " teleported to spectate location.");
+            } else {
+                // Handle teleportation failure
+                MessageUtils.sendConsole("error", "Method: spectatorTeleportToArena(Player player)");
+                MessageUtils.sendConsole("error", "Failed to teleport player to spectate location!");
+                MessageUtils.sendConsole("error", "Using PaperLib teleportAsync method.");
+                MessageUtils.sendConsole("info", "Trying alternate FoliaLib AsyncTeleport method.");
+                CompletableFuture<Boolean> foliaLibFuture = RedLightGreenLight.getPlugin().getFoliaLib().getScheduler().teleportAsync(player, location);
+                foliaLibFuture.thenAccept(foliaLibResult -> {
+                    if (foliaLibResult) {
+                        player.setGameMode(GameMode.SPECTATOR);
+                        MessageUtils.sendDebugConsole("info", "Player " + player.getName() + " teleported to spectate location.");
+                    } else {
+                        // Handle fallback teleportation failure
+                        MessageUtils.sendConsole("error", "Method: spectatorTeleportToArena(Player player)");
+                        MessageUtils.sendConsole("error", "Failed to teleport player to spectate location!");
+                        MessageUtils.sendConsole("error", "Using FoliaLib AsyncTeleport method.");
+                        MessageUtils.sendConsole("severe", "<=============================================>");
+                        MessageUtils.sendConsole("severe", "Failed to teleport player to spectate location!");
+                        MessageUtils.sendConsole("severe", "Player: " + player.getName());
+                        MessageUtils.sendConsole("severe", "Location: " + location);
+                        MessageUtils.sendConsole("severe", "Attempted using PaperLib teleportAsync method.");
+                        MessageUtils.sendConsole("severe", "Attempted using backup FoliaLib AsyncTeleport method.");
+                        MessageUtils.sendConsole("severe", "Please check your spectate location in the config.");
+                        MessageUtils.sendConsole("severe", "Please check your server console for more information.");
+                        MessageUtils.sendConsole("severe", "Please send your server console log to the plugin developer.");
+                        MessageUtils.sendConsole("severe", "Discord: https://discord.gg/crapticraft");
+                        MessageUtils.sendConsole("severe", "<=============================================>");
+                    }
+                });
+            }
+        });
     }
 
     public static void startGameArena1(Player player) {
